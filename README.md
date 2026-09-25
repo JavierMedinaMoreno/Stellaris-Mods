@@ -1,1 +1,2 @@
 My collection of independently authored and maintained modifications for the grand strategy game Stellaris, serving hundreds of subscribed users on the Steam Workshop. Implemented using Paradox Interactive's proprietary Clausewitz scripting language to eliminate engine-level script bottlenecks, repair state machine deadlocks, and calibrate complex multi-variable mechanics.
+https://steamcommunity.com/profiles/76561198065748205/myworkshopfiles?appid=281990
