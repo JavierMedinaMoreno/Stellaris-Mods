@@ -1,0 +1,117 @@
+# Scripted Triggers for Mutual Defense Resolutions Navy-to-Empire-Size Ratio Compliance Checks
+
+navy_is_below_md_tier_1 = {
+	check_variable_arithmetic = {
+		which = value:navy_vs_empire_size_ratio
+		value < @MUTUALDEFENSE_RATIO_TIER_1
+	}
+}
+
+navy_is_below_md_tier_2 = {
+	check_variable_arithmetic = {
+		which = value:navy_vs_empire_size_ratio
+		value < @MUTUALDEFENSE_RATIO_TIER_2
+	}
+}
+
+navy_is_below_md_tier_3 = {
+	check_variable_arithmetic = {
+		which = value:navy_vs_empire_size_ratio
+		value < @MUTUALDEFENSE_RATIO_TIER_3
+	}
+}
+
+navy_is_below_md_tier_4 = {
+	check_variable_arithmetic = {
+		which = value:navy_vs_empire_size_ratio
+		value < @MUTUALDEFENSE_RATIO_TIER_4
+	}
+}
+
+navy_is_below_md_tier_5 = {
+	check_variable_arithmetic = {
+		which = value:navy_vs_empire_size_ratio
+		value < @MUTUALDEFENSE_RATIO_TIER_5
+	}
+}
+
+is_any_mutualdefense_resolution_active = {
+	OR = {
+		is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+		is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+		is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+		is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+		is_active_resolution = "resolution_mutualdefense_renegade_containment"
+	}
+}
+
+navy_is_below_active_mutualdefense_requirement = {
+	OR = {
+		AND = {
+			is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+			navy_is_below_md_tier_1 = yes
+		}
+		AND = {
+			is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+			navy_is_below_md_tier_2 = yes
+		}
+		AND = {
+			is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			navy_is_below_md_tier_3 = yes
+		}
+		AND = {
+			is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+			navy_is_below_md_tier_4 = yes
+		}
+		AND = {
+			is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			navy_is_below_md_tier_5 = yes
+		}
+	}
+}
+
+is_exempt_from_mutualdefense_breach = {
+	OR = {
+		has_country_flag = constitutional_immunity
+		is_at_war = yes
+		has_modifier = country_defaulted
+		is_any_crisis_active = yes
+	}
+}
+
+is_violating_mutualdefense_resolution = {
+	is_galactic_community_member = yes
+	navy_is_below_active_mutualdefense_requirement = yes
+	is_exempt_from_mutualdefense_breach = no
+}
+
+is_any_crisis_active = {
+	OR = {
+		# Endgame Crises (Prethoryn, Extradimensionals, Contingency, Synth Queen)
+		any_country = {
+			is_crisis_faction = yes
+		}
+
+		# The Great Khan (Awakened Marauders)
+		any_country = {
+			is_country_type = awakened_marauders
+		}
+
+		# Gray Tempest (Active Nanite Fleets)
+		any_country = {
+			is_country_type = gray_goo
+		}
+
+			# Become the Crisis or Declared by GalCom
+		any_country = {
+			OR = {
+				has_country_flag = declared_crisis
+				has_crisis_level = crisis_level_5
+			}
+		}
+
+		# Astral Planes & Grand Archive Crises
+		has_global_flag = formless_crisis_active
+		is_voidworms_crisis_active = yes
+	}
+}

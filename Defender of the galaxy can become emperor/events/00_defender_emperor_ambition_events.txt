@@ -1,0 +1,36 @@
+# ==============================================================================
+# Overrides: ambition.340
+# Vanilla Source: 'events/ambition_events.txt' (lines 1766-1785)
+# ==============================================================================
+
+# Vanilla block: 'events/ambition_events.txt' (namespace declaration, line 1)
+namespace = ambition
+# End of vanilla block: 'events/ambition_events.txt' (namespace declaration, line 1)
+
+# Vanilla block: 'events/ambition_events.txt' (event definition & triggers, lines 1766-1774)
+#340 - Custodian Mission Check
+country_event = {
+	id = ambition.340
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_event_chain = defender_of_the_galaxy_chain
+		has_menace_perk = menp_defender_crisis_damage_2
+		# End of vanilla block: 'events/ambition_events.txt' (event definition & triggers, lines 1766-1774)
+		OR = {
+			is_galactic_custodian = yes
+			is_galactic_emperor = yes
+		}
+		# Vanilla block: 'events/ambition_events.txt' (event immediate effect, lines 1776-1785)
+	}
+
+	immediate = {
+		add_mission_counter = {
+			mission =  MISSION_BE_CUSTODIAN
+			counter = BE_CUSTODIAN
+			amount = 1
+		}
+	}
+}
+# End of vanilla block: 'events/ambition_events.txt' (event immediate effect, lines 1776-1785)

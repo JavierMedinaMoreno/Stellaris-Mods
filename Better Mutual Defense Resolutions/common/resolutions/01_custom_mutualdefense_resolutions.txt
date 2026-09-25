@@ -1,0 +1,878 @@
+resolution_mutualdefense_the_readied_shield = {
+	icon = "GFX_resolution_mutual_defense"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t1
+		}
+	}
+	target = no
+	level = 1
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+	}
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_the_readied_shield_tooltip
+		hidden_effect = {
+			set_global_flag = resolution_with_breach_effect_passed
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	allow = {
+		custom_tooltip = {
+			fail_text = "resolution_already_active"
+			NOR = {
+				is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+				is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+				is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+				is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+				is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			}
+		}
+	}
+
+	breach = {
+		NOT = { has_country_flag = constitutional_immunity }
+		custom_tooltip = {
+			fail_text = "resolution_mutualdefense_the_readied_shield_breach"
+			navy_is_below_md_tier_1 = yes
+		}
+		NOT = { has_modifier = country_defaulted }
+		is_at_war = no
+		is_any_crisis_active = no
+		has_country_flag = md_breach_grace_started
+		NOT = { has_country_flag = md_breach_grace_period }
+	}
+
+	ai_weight = {
+		base = @resolution_weight_loved
+
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_militarist
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = 2
+			has_ethic = ethic_fanatic_militarist
+			desc = ethic_fanatic_militarist
+		}
+
+		modifier = {
+			factor = 1.5
+			OR = {
+				has_valid_civic = civic_citizen_service
+				has_valid_civic = civic_distinguished_admiralty
+				has_valid_civic = civic_warrior_culture
+				has_valid_civic = civic_private_military_companies
+				has_valid_civic = civic_naval_contractors
+				has_valid_civic = civic_hive_subspace_ephapse
+				has_valid_civic = civic_hive_strength_of_legions
+				has_valid_civic = civic_machine_warbots
+			}
+			desc = gal_com_supporting_civics
+		}
+
+		modifier = {
+			factor = value:md_compliance_ratio_tier_1
+			navy_is_below_md_tier_1 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 0.75
+			has_ethic = ethic_pacifist
+			desc = ethic_pacifist
+		}
+
+		modifier = {
+			factor = 0.5
+			has_ethic = ethic_fanatic_pacifist
+			desc = ethic_fanatic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_military_readiness_act = {
+	icon = "GFX_resolution_mutual_defense"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t2
+		}
+	}
+	target = no
+	level = 2
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+		resolution_mutualdefense_naval_weight = 1
+	}
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_military_readiness_act_tooltip
+		hidden_effect = {
+			set_global_flag = resolution_with_breach_effect_passed
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	allow = {
+		is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+	}
+
+	breach = {
+		NOT = { has_country_flag = constitutional_immunity }
+		custom_tooltip = {
+			fail_text = "resolution_mutualdefense_military_readiness_act_breach"
+			navy_is_below_md_tier_2 = yes
+		}
+		NOT = { has_modifier = country_defaulted }
+		is_at_war = no
+		is_any_crisis_active = no
+		has_country_flag = md_breach_grace_started
+		NOT = { has_country_flag = md_breach_grace_period }
+	}
+
+	ai_weight = {
+		base = @resolution_weight_popular
+
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_militarist
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = 2
+			has_ethic = ethic_fanatic_militarist
+			desc = ethic_fanatic_militarist
+		}
+
+		modifier = {
+			factor = 1.5
+			OR = {
+				has_valid_civic = civic_citizen_service
+				has_valid_civic = civic_distinguished_admiralty
+				has_valid_civic = civic_warrior_culture
+				has_valid_civic = civic_private_military_companies
+				has_valid_civic = civic_naval_contractors
+				has_valid_civic = civic_hive_subspace_ephapse
+				has_valid_civic = civic_hive_strength_of_legions
+				has_valid_civic = civic_machine_warbots
+			}
+			desc = gal_com_supporting_civics
+		}
+
+		modifier = {
+			factor = value:md_compliance_ratio_tier_2
+			navy_is_below_md_tier_2 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 0.5
+			has_ethic = ethic_pacifist
+			desc = ethic_pacifist
+		}
+
+		modifier = {
+			factor = 0.25
+			has_ethic = ethic_fanatic_pacifist
+			desc = ethic_fanatic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_enemy_of_my_enemy = {
+	icon = "GFX_resolution_mutual_defense"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t3
+		}
+	}
+	target = no
+	level = 3
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+		resolution_mutualdefense_naval_weight = 2
+	}
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_enemy_of_my_enemy_tooltip
+		hidden_effect = {
+			set_global_flag = resolution_with_breach_effect_passed
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	allow = {
+		is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+	}
+
+	breach = {
+		NOT = { has_country_flag = constitutional_immunity }
+		custom_tooltip = {
+			fail_text = "resolution_mutualdefense_enemy_of_my_enemy_breach"
+			navy_is_below_md_tier_3 = yes
+		}
+		NOT = { has_modifier = country_defaulted }
+		is_at_war = no
+		is_any_crisis_active = no
+		has_country_flag = md_breach_grace_started
+		NOT = { has_country_flag = md_breach_grace_period }
+	}
+
+	ai_weight = {
+		base = @resolution_weight_normal
+
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_militarist
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = 2
+			has_ethic = ethic_fanatic_militarist
+			desc = ethic_fanatic_militarist
+		}
+
+		modifier = {
+			factor = 1.5
+			OR = {
+				has_valid_civic = civic_citizen_service
+				has_valid_civic = civic_distinguished_admiralty
+				has_valid_civic = civic_warrior_culture
+				has_valid_civic = civic_private_military_companies
+				has_valid_civic = civic_naval_contractors
+				has_valid_civic = civic_hive_subspace_ephapse
+				has_valid_civic = civic_hive_strength_of_legions
+				has_valid_civic = civic_machine_warbots
+			}
+			desc = gal_com_supporting_civics
+		}
+
+		modifier = {
+			factor = value:md_compliance_ratio_tier_3
+			navy_is_below_md_tier_3 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 0.25
+			has_ethic = ethic_pacifist
+			desc = ethic_pacifist
+		}
+
+		modifier = {
+			factor = 0
+			has_ethic = ethic_fanatic_pacifist
+			desc = ethic_fanatic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_castigation_proclamation = {
+	icon = "GFX_resolution_mutual_defense"
+
+	potential = {
+		has_federations_dlc = yes
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t4
+		}
+	}
+	target = no
+	level = 4
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+		resolution_mutualdefense_naval_weight = 3
+	}
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_castigation_proclamation_tooltip
+		hidden_effect = {
+			set_global_flag = resolution_with_breach_effect_passed
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	allow = {
+		is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+	}
+
+	breach = {
+		NOT = { has_country_flag = constitutional_immunity }
+		custom_tooltip = {
+			fail_text = "resolution_mutualdefense_castigation_proclamation_breach"
+			navy_is_below_md_tier_4 = yes
+		}
+		NOT = { has_modifier = country_defaulted }
+		is_at_war = no
+		is_any_crisis_active = no
+		has_country_flag = md_breach_grace_started
+		NOT = { has_country_flag = md_breach_grace_period }
+	}
+
+	ai_weight = {
+		base = @resolution_weight_unpopular
+
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_militarist
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = 2
+			has_ethic = ethic_fanatic_militarist
+			desc = ethic_fanatic_militarist
+		}
+
+		modifier = {
+			factor = 1.5
+			OR = {
+				has_valid_civic = civic_citizen_service
+				has_valid_civic = civic_distinguished_admiralty
+				has_valid_civic = civic_warrior_culture
+				has_valid_civic = civic_private_military_companies
+				has_valid_civic = civic_naval_contractors
+				has_valid_civic = civic_hive_subspace_ephapse
+				has_valid_civic = civic_hive_strength_of_legions
+				has_valid_civic = civic_machine_warbots
+			}
+			desc = gal_com_supporting_civics
+		}
+
+		modifier = {
+			factor = 0.8
+			OR = {
+				has_modifier = resolution_denounced
+				is_in_breach_of_any = yes
+			}
+			desc = gal_com_is_denounced_or_in_breach
+		}
+
+		modifier = {
+			factor = value:md_compliance_ratio_tier_4
+			navy_is_below_md_tier_4 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 0
+			is_pacifist = yes
+			desc = ethic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_renegade_containment = {
+	icon = "GFX_resolution_mutual_defense"
+
+	potential = {
+		has_federations_dlc = yes
+	}
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t5
+		}
+	}
+	target = no
+	level = 5
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+		resolution_mutualdefense_naval_weight = 4
+	}
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_renegade_containment_tooltip
+		hidden_effect = {
+			set_global_flag = resolution_with_breach_effect_passed
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	allow = {
+		is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+	}
+
+	breach = {
+		NOT = { has_country_flag = constitutional_immunity }
+		custom_tooltip = {
+			fail_text = "resolution_mutualdefense_renegade_containment_breach"
+			navy_is_below_md_tier_5 = yes
+		}
+		NOT = { has_modifier = country_defaulted }
+		is_at_war = no
+		is_any_crisis_active = no
+		has_country_flag = md_breach_grace_started
+		NOT = { has_country_flag = md_breach_grace_period }
+	}
+
+	ai_weight = {
+		base = @resolution_weight_disliked
+
+		modifier = {
+			factor = 1.5
+			has_ethic = ethic_militarist
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = 2
+			has_ethic = ethic_fanatic_militarist
+			desc = ethic_fanatic_militarist
+		}
+
+		modifier = {
+			factor = 1.5
+			OR = {
+				has_valid_civic = civic_citizen_service
+				has_valid_civic = civic_distinguished_admiralty
+				has_valid_civic = civic_warrior_culture
+				has_valid_civic = civic_private_military_companies
+				has_valid_civic = civic_naval_contractors
+				has_valid_civic = civic_hive_subspace_ephapse
+				has_valid_civic = civic_hive_strength_of_legions
+				has_valid_civic = civic_machine_warbots
+			}
+			desc = gal_com_supporting_civics
+		}
+
+		modifier = {
+			factor = value:md_compliance_ratio_tier_5
+			navy_is_below_md_tier_5 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 0
+			is_pacifist = yes
+			desc = ethic_pacifist
+		}
+	}
+}
+
+# REPEAL RESOLUTIONS
+
+resolution_mutualdefense_repeal_1 = {
+	icon = "GFX_repeal_red"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t1
+		}
+	}
+	target = no
+	fire_and_forget = yes
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_repeal_1_effect_success
+		hidden_effect = {
+			cancel_resolution = "resolution_mutualdefense_the_readied_shield"
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	potential = {
+		is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+	}
+
+	allow = {}
+
+	ai_weight = {
+		base = @resolution_weight_unpopular
+
+		modifier = {
+			factor = 0
+			is_militarist = yes
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = value:md_repeal_compliance_ratio_tier_1
+			navy_is_below_md_tier_1 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 2
+			is_pacifist = yes
+			desc = ethic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_repeal_2 = {
+	icon = "GFX_repeal_red"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t2
+		}
+	}
+	target = no
+	fire_and_forget = yes
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_repeal_2_effect_success
+		hidden_effect = {
+			cancel_resolution = "resolution_mutualdefense_military_readiness_act"
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	potential = {
+		is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+	}
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+	}
+
+	ai_weight = {
+		base = @resolution_weight_unpopular
+
+		modifier = {
+			factor = 0
+			is_militarist = yes
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = value:md_repeal_compliance_ratio_tier_2
+			navy_is_below_md_tier_2 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 2
+			is_pacifist = yes
+			desc = ethic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_repeal_3 = {
+	icon = "GFX_repeal_red"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t3
+		}
+	}
+	target = no
+	fire_and_forget = yes
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_repeal_3_effect_success
+		hidden_effect = {
+			cancel_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+
+		custom_tooltip = resolution_mutualdefense_military_readiness_act_tooltip
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	potential = {
+		is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+	}
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+		resolution_mutualdefense_naval_weight = 1
+	}
+
+	ai_weight = {
+		base = @resolution_weight_unpopular
+
+		modifier = {
+			factor = 0
+			is_militarist = yes
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = value:md_repeal_compliance_ratio_tier_3
+			navy_is_below_md_tier_3 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 2
+			is_pacifist = yes
+			desc = ethic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_repeal_4 = {
+	icon = "GFX_repeal_red"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t4
+		}
+	}
+	target = no
+	fire_and_forget = yes
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_repeal_4_effect_success
+		hidden_effect = {
+			cancel_resolution = "resolution_mutualdefense_castigation_proclamation"
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+
+		custom_tooltip = resolution_mutualdefense_enemy_of_my_enemy_tooltip
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	potential = {
+		has_federations_dlc = yes
+		is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+	}
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+		resolution_mutualdefense_naval_weight = 2
+	}
+
+	ai_weight = {
+		base = @resolution_weight_unpopular
+
+		modifier = {
+			factor = 0
+			is_militarist = yes
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = value:md_repeal_compliance_ratio_tier_4
+			navy_is_below_md_tier_4 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 2
+			is_pacifist = yes
+			desc = ethic_pacifist
+		}
+	}
+}
+
+resolution_mutualdefense_repeal_5 = {
+	icon = "GFX_repeal_red"
+
+	resources = {
+		category = resolutions
+		cost = {
+			influence = @resolution_cost_t5
+		}
+	}
+	target = no
+	fire_and_forget = yes
+
+	effect = {
+		custom_tooltip = resolution_mutualdefense_repeal_5_effect_success
+		hidden_effect = {
+			cancel_resolution = "resolution_mutualdefense_renegade_containment"
+			set_timed_country_flag = { flag = galactic_community_resolution_passed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_passed_diplomatic_weight
+				days = 2200
+			}
+		}
+
+		custom_tooltip = resolution_mutualdefense_castigation_proclamation_tooltip
+	}
+
+	fail_effects = {
+		hidden_effect = {
+			set_timed_country_flag = { flag = galactic_community_resolution_failed_mutualdefense_repeal days = @resolution_flag_timer }
+			add_modifier = {
+				modifier = resolution_failed_diplomatic_weight
+				days = 2200
+			}
+		}
+	}
+
+	potential = {
+		has_federations_dlc = yes
+		is_active_resolution = "resolution_mutualdefense_renegade_containment"
+	}
+
+	modifier = {
+		resolution_mutualdefense_the_readied_shield = 1
+		resolution_mutualdefense_naval_weight = 3
+	}
+
+	ai_weight = {
+		base = @resolution_weight_unpopular
+
+		modifier = {
+			factor = 0
+			is_militarist = yes
+			desc = ethic_militarist
+		}
+
+		modifier = {
+			factor = value:md_repeal_compliance_ratio_tier_5
+			navy_is_below_md_tier_5 = yes
+			desc = gal_com_md_fleets_do_not_meet_requirement
+		}
+
+		modifier = {
+			factor = 2
+			is_pacifist = yes
+			desc = ethic_pacifist
+		}
+	}
+}

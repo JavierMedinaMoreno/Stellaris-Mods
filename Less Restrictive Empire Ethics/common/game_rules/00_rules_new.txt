@@ -1,0 +1,96 @@
+can_add_claim = {
+	hidden_trigger = {
+		if = {
+			limit = {
+				root = { NOT = { is_country_type = default } }
+			}
+			always = yes
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_NOT_VALID_EMPIRE
+		NAND = {
+			exists = owner
+			owner = {
+				NOR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_DEVOURING_SWARM
+		NAND = {
+			root = { has_valid_civic = civic_hive_devouring_swarm }
+			root = { is_lithoid_empire = no }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_DEVOURING_SWARM_LITHOID
+		NAND = {
+			root = { has_valid_civic = civic_hive_devouring_swarm }
+			root = { is_lithoid_empire = yes }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_ASSIMILATOR
+		NOT = { root = { has_valid_civic = civic_machine_assimilator } }
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_NOMAD
+		NOT = {
+			root = { is_nomadic = yes }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_PURIFIERS
+		NAND = {
+			exists = owner
+			root = { has_valid_civic = civic_fanatic_purifiers }
+			NOT = {	owner = { is_same_species = root } }
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_EXTERMINATOR
+		NAND = {
+			exists = owner
+			root = { has_valid_civic = civic_machine_terminator }
+			owner = {
+				NOR = {
+					is_same_species = root
+					has_country_flag = synthetic_empire
+					is_machine_empire = yes
+					is_individual_machine = yes
+				}
+			}
+		}
+	}
+	custom_tooltip = {
+		fail_text = CANNOT_ADD_CLAIM_THEY_THREAT
+		NAND = {
+			exists = owner
+			owner = {
+				OR = {
+					has_valid_civic = civic_hive_devouring_swarm
+					has_valid_civic = civic_fanatic_purifiers
+					has_valid_civic = civic_machine_terminator
+					has_valid_civic = civic_machine_assimilator
+					has_valid_civic = civic_scorched_earth
+					has_valid_civic = civic_hive_scorched_earth
+				}
+			}
+			root = {
+				NOR = {
+					has_valid_civic = civic_hive_devouring_swarm
+					has_valid_civic = civic_fanatic_purifiers
+					has_valid_civic = civic_machine_terminator
+					has_valid_civic = civic_machine_assimilator
+					has_valid_civic = civic_scorched_earth
+					has_valid_civic = civic_hive_scorched_earth
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,28 @@
+# ==============================================================================
+# Overrides: resolution_category_emperor_imperial_institutions
+# Vanilla Source: 'common/resolution_categories/01_resolution_categories_nemesis.txt' (lines 42-58)
+# ==============================================================================
+
+# Vanilla block: 'common/resolution_categories/01_resolution_categories_nemesis.txt' (category setup & base resolutions)
+resolution_category_emperor_imperial_institutions = {
+	group = galactic_empire
+	icon = "GFX_resolution_imperial_institutions"
+	multiple_active_resolutions = yes
+	resolution_types = {
+		"resolution_emperor_imperial_armada"
+		"resolution_emperor_expand_ia"
+		# End of vanilla block: 'common/resolution_categories/01_resolution_categories_nemesis.txt' (category setup & base resolutions)
+		"resolution_emperor_expand_ia_2"
+		"resolution_emperor_ia_drills"
+		# Vanilla block: 'common/resolution_categories/01_resolution_categories_nemesis.txt' (remaining resolutions)
+		"resolution_emperor_imperial_legions"
+		"resolution_emperor_ina"
+		"resolution_emperor_disband_ina"
+		"resolution_emperor_gto"
+		"resolution_emperor_disband_gto"
+		"resolution_emperor_isd"
+		"resolution_emperor_imperial_charter"
+		"resolution_emperor_revoke_imperial_charter"
+	}
+}
+# End of vanilla block: 'common/resolution_categories/01_resolution_categories_nemesis.txt' (remaining resolutions)

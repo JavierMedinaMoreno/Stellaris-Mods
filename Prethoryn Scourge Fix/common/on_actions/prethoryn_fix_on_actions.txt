@@ -1,0 +1,57 @@
+# On-Action Hooks for Prethoryn Fix & Swarm Dummy Lifecycle
+
+# Initializes coordinator, defeat watchdog, and swarm_dummy entity
+on_country_created = {
+	events = {
+		prethoryn_fix.2
+	}
+}
+
+# Monthly Pulse: Evaluates defeat conditions across Swarm and Swarm Dummy
+on_monthly_pulse = {
+	events = {
+		prethoryn_fix.200
+	}
+}
+
+# Verifies and re-anchors loops and dummy entity on save game load
+on_single_player_save_game_load = {
+	events = {
+		prethoryn_fix.3
+	}
+}
+
+# Combat Start: Transfer loaned fleets to real Swarm to apply native combat modifiers and scoring
+on_fleet_combat_joined_defender = {
+	events = {
+		prethoryn_fix.50
+	}
+}
+
+on_fleet_combat_joined_attacker = {
+	events = {
+		prethoryn_fix.50
+	}
+}
+
+# Combat Exit: Return post-battle warships to swarm_dummy to re-establish persistent siege lock
+on_fleet_exit_battle = {
+	events = {
+		prethoryn_fix.53
+	}
+}
+
+# Emergency FTL / MIA: Return loaned fleets to real Swarm so emergence coordinates resolve properly
+on_fleet_went_mia = {
+	events = {
+		prethoryn_fix.51
+	}
+}
+
+# Colony Conquest: Flip dummy controller to real Swarm immediately and schedule transport splitting
+on_colony_attackers_win = {
+	events = {
+		prethoryn_fix.52
+		prethoryn_fix.54
+	}
+}

@@ -1,0 +1,12 @@
+﻿l_simp_chinese:
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_expand_gdf_2"
+ resolution_emperor_expand_ia_2: "至高帝国海军"
+ resolution_emperor_expand_ia_2_desc: "帝国海军是我们抵御威胁星系的恐怖存在的最强保障。在帝国的直接指挥下，它是星系中最强大的军事力量。"
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_gdf_drills"
+ resolution_emperor_ia_drills: "帝国军事操练"
+ resolution_emperor_ia_drills_desc: "严格的舰队演习与集中指挥将确保星海帝国战胜任何威胁。恪尽职守，我们绝不动摇。"
+
+ #Imperial counterpart to vanilla "resolution_needs_gdf"
+ resolution_needs_ia: "£trigger_no£需要通过§H帝国海军§!议案"

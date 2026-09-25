@@ -1,0 +1,13 @@
+# Grace Period Parameter for Mutual Defense Resolutions
+# Set @GRACE_PERIOD_YEARS to change the grace period duration for the entire mod.
+# Changes automatically propagate to events and tooltips.
+@GRACE_PERIOD_YEARS = 5
+
+# Required navy_vs_empire_size_ratio for each resolution tier
+# Set these variables to easily modify required ratios across the entire mod logic.
+# Changes automatically propagate to resolution tooltips and breach descriptions.
+@MUTUALDEFENSE_RATIO_TIER_1 = 0.25
+@MUTUALDEFENSE_RATIO_TIER_2 = 0.5
+@MUTUALDEFENSE_RATIO_TIER_3 = 1
+@MUTUALDEFENSE_RATIO_TIER_4 = 1.5
+@MUTUALDEFENSE_RATIO_TIER_5 = 2

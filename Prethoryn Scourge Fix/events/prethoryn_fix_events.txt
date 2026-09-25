@@ -1,0 +1,1592 @@
+namespace = prethoryn_fix
+
+# =========================================================================
+# Prethoryn Scourge Fix Events
+# =========================================================================
+
+# 10-day coordinator loop running on the Prethoryn Swarm country (root = swarm).
+# Evaluates galaxy star systems to assign siege and capture task forces to contested colonies.
+country_event = {
+	id = prethoryn_fix.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		every_system = {
+			limit = {
+				# Swarm or loaned dummy fleet must be physically present in system
+				any_fleet_in_system = {
+					exists = owner
+					owner = {
+						OR = {
+							is_same_value = root
+							is_country_type = swarm_dummy
+						}
+					}
+				}
+
+				# System starbase must not be controlled by a hostile empire
+				NOR = {
+					AND = {
+						exists = starbase
+						starbase = { owner = { is_hostile = root } }
+					}
+				}
+
+				# System contains an unconquered hostile colony or an anchored colony needing cleanup
+				any_system_planet = {
+					is_star = no
+					OR = {
+						AND = {
+							is_colony = yes
+							owner = { is_hostile = root }
+							NOR = {
+								owner = {
+									OR = {
+										is_country_type = swarm
+										is_country_type = swarm_dummy
+									}
+								}
+								AND = {
+									exists = controller
+									controller = {
+										OR = {
+											is_country_type = swarm
+											is_country_type = swarm_dummy
+										}
+									}
+								}
+							}
+						}
+						has_planet_flag = prethoryn_has_siege_anchor
+					}
+				}
+			}
+
+			every_system_planet = {
+				limit = {
+					is_star = no
+					OR = {
+						AND = {
+							is_colony = yes
+							owner = { is_hostile = root }
+							NOR = {
+								owner = {
+									OR = {
+										is_country_type = swarm
+										is_country_type = swarm_dummy
+									}
+								}
+								AND = {
+									exists = controller
+									controller = {
+										OR = {
+											is_country_type = swarm
+											is_country_type = swarm_dummy
+										}
+									}
+								}
+							}
+						}
+						has_planet_flag = prethoryn_has_siege_anchor
+					}
+				}
+				planet_event = { id = prethoryn_fix.10 }
+			}
+		}
+
+		country_event = { id = prethoryn_fix.1 days = 10 }
+		country_event = { id = prethoryn_fix.60 }
+	}
+}
+
+# Schedules 5-day delayed transport army splitting upon planetary conquest
+country_event = {
+	id = prethoryn_fix.54
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			is_country_type = swarm
+			is_country_type = swarm_dummy
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = { is_country_type = swarm_dummy }
+			random_country = {
+				limit = {
+					is_country_type = swarm
+					NOT = { is_country_type = swarm_dummy }
+				}
+				country_event = { id = prethoryn_fix.60 days = 5 } # Allows assault armies to embark
+			}
+		}
+		else = {
+			country_event = { id = prethoryn_fix.60 days = 5 }
+		}
+	}
+}
+
+# Transport Fleet Splitting: Splits merged armies exceeding 20 into standard task forces
+country_event = {
+	id = prethoryn_fix.60
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = swarm
+		NOT = { is_country_type = swarm_dummy }
+	}
+
+	immediate = {
+		owner_species = { save_event_target_as = prethoryn_species }
+		every_owned_fleet = {
+			limit = {
+				is_ship_class = shipclass_transport
+				NOT = { has_fleet_flag = prethoryn_assigned_transport_fleet }
+				exists = solar_system
+				count_controlled_ship = {
+					limit = { is_ship_class = shipclass_transport }
+					count > 20
+				}
+			}
+			save_event_target_as = parent_transport_fleet
+			solar_system = {
+				save_event_target_as = transport_location_system
+			}
+			root = {
+				create_fleet = {
+					name = "NAME_Prethoryn_Armies"
+					effect = {
+						set_owner = root
+						while = {
+							count = 20
+							create_army_transport = {
+								ship_name = "NAME_Prethoryn_Transport"
+								graphical_culture = "swarm_01"
+								army_name = "NAME_Prethoryn_Invaders"
+								army_type = "swarm_army"
+								species = event_target:prethoryn_species
+							}
+						}
+						set_location = {
+							target = event_target:parent_transport_fleet
+							distance = 5
+							angle = random
+						}
+					}
+				}
+			}
+			while = {
+				count = 20
+				random_controlled_ship = {
+					limit = { is_ship_class = shipclass_transport }
+					destroy_ship = this
+				}
+			}
+		}
+	}
+}
+
+# Startup Hook (on_country_created): Instantiates swarm_dummy and starts coordinator loop
+country_event = {
+	id = prethoryn_fix.2
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = swarm
+		NOT = { is_country_type = swarm_dummy }
+	}
+
+	immediate = {
+		set_country_flag = prethoryn_fix_loop_active
+
+		if = {
+			limit = {
+				NOT = {
+					any_country = { is_country_type = swarm_dummy }
+				}
+			}
+			owner_species = { save_event_target_as = prethoryn_species }
+			create_country = {
+				name = "NAME_Prethoryn_Scourge"
+				type = "swarm_dummy"
+				species = event_target:prethoryn_species
+				name_list = "Prethoryn"
+				flag = {
+					icon = { category = "special" file = "the_swarm.dds" }
+					background = { category = "backgrounds" file = "new_dawn.dds" }
+					colors = { "orange" "grey" "null" "null" }
+				}
+				effect = {
+					save_global_event_target_as = prethoryn_dummy_country
+				}
+			}
+		}
+
+		every_country = {
+			establish_communications_no_message = event_target:prethoryn_dummy_country
+		}
+		establish_communications_no_message = event_target:prethoryn_dummy_country
+		set_faction_hostility = {
+			target = event_target:prethoryn_dummy_country
+			set_hostile = no
+			set_neutral = no
+			set_friendly = yes
+		}
+		event_target:prethoryn_dummy_country = {
+			establish_communications_no_message = root
+			set_faction_hostility = {
+				target = root
+				set_hostile = no
+				set_neutral = no
+				set_friendly = yes
+			}
+		}
+
+		if = {
+			limit = {
+				has_global_flag = custom_difficulty_active
+			}
+			event_target:prethoryn_dummy_country = {
+				set_country_flag = custom_difficulty_crisis_flag
+				set_variable = { which = custom_difficulty_scaled_difficulty_bonuses value = 3.0 }
+				country_event = { id = custom_difficulty.80 }
+				country_event = { id = custom_difficulty.85 }
+			}
+		}
+
+		country_event = { id = prethoryn_fix.1 }
+	}
+}
+
+# Save-Game Load Hook (on_single_player_save_game_load): Re-anchors loops and swarm_dummy
+event = {
+	id = prethoryn_fix.3
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			is_country_type = swarm
+			NOT = { is_country_type = swarm_dummy }
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = {
+					any_country = { is_country_type = swarm_dummy }
+				}
+			}
+			random_country = {
+				limit = {
+					is_country_type = swarm
+					NOT = { is_country_type = swarm_dummy }
+				}
+				owner_species = { save_event_target_as = prethoryn_species }
+				create_country = {
+					name = "NAME_Prethoryn_Scourge"
+					type = "swarm_dummy"
+					species = event_target:prethoryn_species
+					name_list = "Prethoryn"
+					flag = {
+						icon = { category = "special" file = "the_swarm.dds" }
+						background = { category = "backgrounds" file = "new_dawn.dds" }
+						colors = { "orange" "grey" "null" "null" }
+					}
+					effect = {
+						save_global_event_target_as = prethoryn_dummy_country
+					}
+				}
+			}
+		}
+		else = {
+			random_country = {
+				limit = { is_country_type = swarm_dummy }
+				save_global_event_target_as = prethoryn_dummy_country
+			}
+		}
+
+		if = {
+			limit = {
+				has_global_flag = custom_difficulty_active
+			}
+			event_target:prethoryn_dummy_country = {
+				set_country_flag = custom_difficulty_crisis_flag
+				set_variable = { which = custom_difficulty_scaled_difficulty_bonuses value = 3.0 }
+				country_event = { id = custom_difficulty.80 }
+				country_event = { id = custom_difficulty.85 }
+			}
+		}
+
+		every_country = {
+			establish_communications_no_message = event_target:prethoryn_dummy_country
+		}
+
+		every_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+			}
+
+			establish_communications_no_message = event_target:prethoryn_dummy_country
+			set_faction_hostility = {
+				target = event_target:prethoryn_dummy_country
+				set_hostile = no
+				set_neutral = no
+				set_friendly = yes
+			}
+			event_target:prethoryn_dummy_country = {
+				establish_communications_no_message = prev
+				set_faction_hostility = {
+					target = prev
+					set_hostile = no
+					set_neutral = no
+					set_friendly = yes
+				}
+			}
+
+			if = {
+				limit = { NOT = { has_country_flag = prethoryn_fix_loop_active } }
+				set_country_flag = prethoryn_fix_loop_active
+				country_event = { id = prethoryn_fix.1 }
+			}
+		}
+	}
+}
+
+# Planet-scoped Colony Task Force Coordinator
+# root: Target colony entity
+# from: Prethoryn Swarm country entity
+planet_event = {
+	id = prethoryn_fix.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_star = no
+		OR = {
+			is_colony = yes
+			has_planet_flag = prethoryn_has_siege_anchor
+		}
+	}
+
+	immediate = {
+		save_event_target_as = target_colony
+
+		# Terminal Cleanup: Releases fleets when colony is conquered, purged, or infested
+		if = {
+			limit = {
+				OR = {
+					AND = {
+						exists = owner
+						owner = { is_country_type = swarm }
+					}
+					AND = {
+						exists = controller
+						controller = { is_country_type = swarm }
+					}
+					is_colony = no
+					is_planet_class = pc_infested
+				}
+			}
+			solar_system = {
+				every_fleet_in_system = {
+					limit = {
+						OR = {
+							has_fleet_flag = prethoryn_anchor@root
+							has_fleet_flag = prethoryn_transport@root
+						}
+					}
+					remove_fleet_flag = prethoryn_anchor@root
+					remove_fleet_flag = prethoryn_transport@root
+					remove_fleet_flag = prethoryn_assigned_combat_fleet
+					remove_fleet_flag = prethoryn_assigned_transport_fleet
+					remove_fleet_flag = prethoryn_loaned_combat_lock
+					remove_fleet_flag = prethoryn_en_route@root
+					clear_fleet_actions = this
+					remove_auto_move_target = yes
+					clear_orders = yes
+
+					if = {
+						limit = {
+							owner = { is_country_type = swarm_dummy }
+						}
+						set_owner = from
+					}
+				}
+			}
+			from = {
+				every_owned_fleet = {
+					limit = {
+						has_fleet_flag = prethoryn_transport@root
+					}
+					remove_fleet_flag = prethoryn_transport@root
+					remove_fleet_flag = prethoryn_assigned_transport_fleet
+					clear_fleet_actions = this
+					remove_auto_move_target = yes
+					clear_orders = yes
+				}
+			}
+			every_country = {
+				limit = { is_country_type = swarm_dummy }
+				every_owned_fleet = {
+					limit = {
+						has_fleet_flag = prethoryn_anchor@root
+					}
+					remove_fleet_flag = prethoryn_anchor@root
+					remove_fleet_flag = prethoryn_assigned_combat_fleet
+					remove_fleet_flag = prethoryn_loaned_combat_lock
+					remove_fleet_flag = prethoryn_en_route@root
+					clear_fleet_actions = this
+					remove_auto_move_target = yes
+					clear_orders = yes
+					set_owner = from
+				}
+			}
+			remove_planet_flag = prethoryn_has_siege_anchor
+		}
+		else = {
+			# System Boundary Safety Release: Strips anchor if warship exited the star system
+			every_country = {
+				limit = {
+					OR = {
+						is_country_type = swarm
+						is_country_type = swarm_dummy
+					}
+				}
+				every_owned_fleet = {
+					limit = {
+						has_fleet_flag = prethoryn_anchor@root
+						NOT = { has_fleet_flag = prethoryn_en_route@root }
+						NOT = {
+							solar_system = {
+								any_system_planet = { is_same_value = root }
+							}
+						}
+					}
+					remove_fleet_flag = prethoryn_anchor@root
+					remove_fleet_flag = prethoryn_assigned_combat_fleet
+					remove_fleet_flag = prethoryn_loaned_combat_lock
+					remove_auto_move_target = yes
+					if = {
+						limit = {
+							owner = { is_country_type = swarm_dummy }
+						}
+						set_owner = from
+					}
+				}
+			}
+
+			# Arrival Check: Remove transit flag upon entering the host system
+			solar_system = {
+				every_fleet_in_system = {
+					limit = {
+						has_fleet_flag = prethoryn_anchor@root
+						has_fleet_flag = prethoryn_en_route@root
+					}
+					remove_fleet_flag = prethoryn_en_route@root
+				}
+			}
+
+			# Section A: Combat Fleet Anchoring & Persistent Siege
+
+			# Case 1: Colony has no anchor combat fleet assigned
+			if = {
+				limit = {
+					solar_system = {
+						NOT = {
+							any_fleet_in_system = {
+								has_fleet_flag = prethoryn_anchor@root
+							}
+						}
+					}
+				}
+				remove_planet_flag = prethoryn_has_siege_anchor
+
+				# Sub-tier 1A: Local military fleet within 40 units
+				solar_system = {
+					random_fleet_in_system = {
+						limit = {
+							owner = { is_country_type = swarm }
+							is_ship_class = shipclass_military
+							is_in_combat = no
+							NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+							distance = {
+								source = root
+								max_distance <= 40
+								same_solar_system = yes
+							}
+						}
+						if = {
+							limit = {
+								NOT = { exists = event_target:prethoryn_dummy_country }
+							}
+							random_country = {
+								limit = { is_country_type = swarm_dummy }
+								save_global_event_target_as = prethoryn_dummy_country
+							}
+						}
+						set_owner = event_target:prethoryn_dummy_country
+						set_fleet_bombardment_stance = armageddon
+						set_fleet_stance = aggressive
+						set_fleet_flag = prethoryn_anchor@root
+						set_fleet_flag = prethoryn_assigned_combat_fleet
+						clear_orders = yes
+						clear_fleet_actions = this
+						remove_auto_move_target = yes
+						queue_actions = {
+							move_to = root
+							orbit_planet = root
+							repeat = {
+								while = {
+									id = "prethoryn_hold_colony_siege_1a"
+									root = {
+										NOR = {
+											AND = {
+												exists = owner
+												owner = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											AND = {
+												exists = controller
+												controller = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											is_colony = no
+											is_planet_class = pc_infested
+										}
+									}
+								}
+								wait = 30
+							}
+						}
+						root = { set_planet_flag = prethoryn_has_siege_anchor }
+					}
+				}
+				# Sub-tier 1B: Any unassigned military fleet in host system
+				if = {
+					limit = { NOT = { has_planet_flag = prethoryn_has_siege_anchor } }
+					solar_system = {
+						random_fleet_in_system = {
+							limit = {
+								owner = { is_country_type = swarm }
+								is_ship_class = shipclass_military
+								is_in_combat = no
+								NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+							}
+							if = {
+								limit = {
+									NOT = { exists = event_target:prethoryn_dummy_country }
+								}
+								random_country = {
+									limit = { is_country_type = swarm_dummy }
+									save_global_event_target_as = prethoryn_dummy_country
+								}
+							}
+							set_owner = event_target:prethoryn_dummy_country
+							set_fleet_bombardment_stance = armageddon
+							set_fleet_stance = aggressive
+							set_fleet_flag = prethoryn_anchor@root
+							set_fleet_flag = prethoryn_assigned_combat_fleet
+							clear_orders = yes
+							clear_fleet_actions = this
+							remove_auto_move_target = yes
+							queue_actions = {
+								move_to = root
+								orbit_planet = root
+								repeat = {
+									while = {
+										id = "prethoryn_hold_colony_siege_1b"
+										root = {
+											NOR = {
+												AND = {
+													exists = owner
+													owner = {
+														OR = {
+															is_country_type = swarm
+															is_country_type = swarm_dummy
+														}
+													}
+												}
+												AND = {
+													exists = controller
+													controller = {
+														OR = {
+															is_country_type = swarm
+															is_country_type = swarm_dummy
+														}
+													}
+												}
+												is_colony = no
+												is_planet_class = pc_infested
+											}
+										}
+									}
+									wait = 30
+								}
+							}
+							root = { set_planet_flag = prethoryn_has_siege_anchor }
+						}
+					}
+				}
+				# Sub-tier 1C: Closest system idle military fleet
+				if = {
+					limit = { NOT = { has_planet_flag = prethoryn_has_siege_anchor } }
+					solar_system = {
+						closest_system = {
+							limit = {
+								any_fleet_in_system = {
+									owner = { is_country_type = swarm }
+									is_ship_class = shipclass_military
+									is_fleet_idle = yes
+									is_in_combat = no
+									NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+								}
+							}
+							random_fleet_in_system = {
+								limit = {
+									owner = { is_country_type = swarm }
+									is_ship_class = shipclass_military
+									is_fleet_idle = yes
+									is_in_combat = no
+									NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+								}
+								if = {
+									limit = {
+										NOT = { exists = event_target:prethoryn_dummy_country }
+									}
+									random_country = {
+										limit = { is_country_type = swarm_dummy }
+										save_global_event_target_as = prethoryn_dummy_country
+									}
+								}
+								set_owner = event_target:prethoryn_dummy_country
+								set_fleet_bombardment_stance = armageddon
+								set_fleet_stance = aggressive
+								set_fleet_flag = prethoryn_anchor@root
+								set_fleet_flag = prethoryn_assigned_combat_fleet
+								set_fleet_flag = prethoryn_en_route@root
+								clear_orders = yes
+								clear_fleet_actions = this
+								remove_auto_move_target = yes
+								queue_actions = {
+									move_to = root
+									orbit_planet = root
+									repeat = {
+										while = {
+											id = "prethoryn_hold_colony_siege_1c"
+											root = {
+												NOR = {
+													AND = {
+														exists = owner
+														owner = {
+															OR = {
+																is_country_type = swarm
+																is_country_type = swarm_dummy
+															}
+														}
+													}
+													AND = {
+														exists = controller
+														controller = {
+															OR = {
+																is_country_type = swarm
+																is_country_type = swarm_dummy
+															}
+														}
+													}
+													is_colony = no
+													is_planet_class = pc_infested
+												}
+											}
+										}
+										wait = 30
+									}
+								}
+								root = { set_planet_flag = prethoryn_has_siege_anchor }
+							}
+						}
+					}
+				}
+				# Sub-tier 1D: Galactic fallback idle military fleet
+				if = {
+					limit = { NOT = { has_planet_flag = prethoryn_has_siege_anchor } }
+					from = {
+						random_owned_fleet = {
+							limit = {
+								is_ship_class = shipclass_military
+								is_fleet_idle = yes
+								is_in_combat = no
+								NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+							}
+							if = {
+								limit = {
+									NOT = { exists = event_target:prethoryn_dummy_country }
+								}
+								random_country = {
+									limit = { is_country_type = swarm_dummy }
+									save_global_event_target_as = prethoryn_dummy_country
+								}
+							}
+							set_owner = event_target:prethoryn_dummy_country
+							set_fleet_bombardment_stance = armageddon
+							set_fleet_stance = aggressive
+							set_fleet_flag = prethoryn_anchor@root
+							set_fleet_flag = prethoryn_assigned_combat_fleet
+							set_fleet_flag = prethoryn_en_route@root
+							clear_orders = yes
+							clear_fleet_actions = this
+							remove_auto_move_target = yes
+							queue_actions = {
+								move_to = root
+								orbit_planet = root
+								repeat = {
+									while = {
+										id = "prethoryn_hold_colony_siege_1d"
+										root = {
+											NOR = {
+												AND = {
+													exists = owner
+													owner = {
+														OR = {
+															is_country_type = swarm
+															is_country_type = swarm_dummy
+														}
+													}
+												}
+												AND = {
+													exists = controller
+													controller = {
+														OR = {
+															is_country_type = swarm
+															is_country_type = swarm_dummy
+														}
+													}
+												}
+												is_colony = no
+												is_planet_class = pc_infested
+											}
+										}
+									}
+									wait = 30
+								}
+							}
+							root = { set_planet_flag = prethoryn_has_siege_anchor }
+						}
+					}
+				}
+			}
+			# Case 2: Reinforcement if cumulative firepower dropped below fleet_size 20
+			else_if = {
+				limit = {
+					solar_system = {
+						NOT = {
+							any_fleet_in_system = {
+								has_fleet_flag = prethoryn_anchor@root
+								NOT = { fleet_size < 20 }
+							}
+						}
+					}
+				}
+				# Sub-tier 2A: Local reinforcement in host system
+				solar_system = {
+					random_fleet_in_system = {
+						limit = {
+							owner = { is_country_type = swarm }
+							is_ship_class = shipclass_military
+							is_in_combat = no
+							NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+						}
+						if = {
+							limit = {
+								NOT = { exists = event_target:prethoryn_dummy_country }
+							}
+							random_country = {
+								limit = { is_country_type = swarm_dummy }
+								save_global_event_target_as = prethoryn_dummy_country
+							}
+						}
+						set_owner = event_target:prethoryn_dummy_country
+						set_fleet_bombardment_stance = armageddon
+						set_fleet_stance = aggressive
+						set_fleet_flag = prethoryn_anchor@root
+						set_fleet_flag = prethoryn_assigned_combat_fleet
+						clear_orders = yes
+						clear_fleet_actions = this
+						remove_auto_move_target = yes
+						queue_actions = {
+							move_to = root
+							orbit_planet = root
+							repeat = {
+								while = {
+									id = "prethoryn_hold_colony_siege_2a"
+									root = {
+										NOR = {
+											AND = {
+												exists = owner
+												owner = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											AND = {
+												exists = controller
+												controller = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											is_colony = no
+											is_planet_class = pc_infested
+										}
+									}
+								}
+								wait = 30
+							}
+						}
+						root = { set_planet_flag = prethoryn_has_reinforcement_anchor }
+					}
+				}
+				# Sub-tier 2B: Fallback to closest neighboring system
+				if = {
+					limit = { NOT = { has_planet_flag = prethoryn_has_reinforcement_anchor } }
+					solar_system = {
+						closest_system = {
+							limit = {
+								any_fleet_in_system = {
+									owner = { is_country_type = swarm }
+									is_ship_class = shipclass_military
+									is_fleet_idle = yes
+									is_in_combat = no
+									NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+								}
+							}
+							random_fleet_in_system = {
+								limit = {
+									owner = { is_country_type = swarm }
+									is_ship_class = shipclass_military
+									is_fleet_idle = yes
+									is_in_combat = no
+									NOT = { has_fleet_flag = prethoryn_assigned_combat_fleet }
+								}
+								if = {
+									limit = {
+										NOT = { exists = event_target:prethoryn_dummy_country }
+									}
+									random_country = {
+										limit = { is_country_type = swarm_dummy }
+										save_global_event_target_as = prethoryn_dummy_country
+									}
+								}
+								set_owner = event_target:prethoryn_dummy_country
+								set_fleet_bombardment_stance = armageddon
+								set_fleet_stance = aggressive
+								set_fleet_flag = prethoryn_anchor@root
+								set_fleet_flag = prethoryn_assigned_combat_fleet
+								clear_orders = yes
+								clear_fleet_actions = this
+								remove_auto_move_target = yes
+								queue_actions = {
+									move_to = root
+									orbit_planet = root
+									repeat = {
+										while = {
+											id = "prethoryn_hold_colony_siege_2b"
+											root = {
+												NOR = {
+													AND = {
+														exists = owner
+														owner = {
+															OR = {
+																is_country_type = swarm
+																is_country_type = swarm_dummy
+															}
+														}
+													}
+													AND = {
+														exists = controller
+														controller = {
+															OR = {
+																is_country_type = swarm
+																is_country_type = swarm_dummy
+															}
+														}
+													}
+													is_colony = no
+													is_planet_class = pc_infested
+												}
+											}
+										}
+										wait = 30
+									}
+								}
+								root = { set_planet_flag = prethoryn_has_reinforcement_anchor }
+							}
+						}
+					}
+				}
+				remove_planet_flag = prethoryn_has_reinforcement_anchor
+			}
+			# Case 3: Re-assert orbital siege if anchor fleet drifted away or finished combat
+			else_if = {
+				limit = {
+					has_orbital_bombardment = no
+					solar_system = {
+						any_fleet_in_system = {
+							has_fleet_flag = prethoryn_anchor@root
+							is_in_combat = no
+							# Must not already be in orbit around this colony
+							NOT = {
+								root = {
+									any_fleet_in_orbit = {
+										is_same_value = prevprev
+									}
+								}
+							}
+							# Protect active pursuit only when hostiles exist in system and fleet is not at star
+							NOT = {
+								AND = {
+									has_fleet_order = aggressive_stance_fleet_order
+									solar_system = {
+										any_fleet_in_system = {
+											owner = { is_hostile = from }
+										}
+									}
+									NOT = {
+										star = {
+											any_fleet_in_orbit = { is_same_value = prevprev }
+										}
+									}
+								}
+							}
+							# Protect sublight approach transit towards colony
+							NOT = {
+								AND = {
+									has_fleet_order = move_to_system_point_order
+									NOT = {
+										star = {
+											any_fleet_in_orbit = { is_same_value = prevprev }
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				solar_system = {
+					every_fleet_in_system = {
+						limit = {
+							has_fleet_flag = prethoryn_anchor@root
+							is_in_combat = no
+							NOT = {
+								root = {
+									any_fleet_in_orbit = {
+										is_same_value = prevprev
+									}
+								}
+							}
+							NOT = {
+								AND = {
+									has_fleet_order = aggressive_stance_fleet_order
+									solar_system = {
+										any_fleet_in_system = {
+											owner = { is_hostile = from }
+										}
+									}
+									NOT = {
+										star = {
+											any_fleet_in_orbit = { is_same_value = prevprev }
+										}
+									}
+								}
+							}
+							NOT = {
+								AND = {
+									has_fleet_order = move_to_system_point_order
+									NOT = {
+										star = {
+											any_fleet_in_orbit = { is_same_value = prevprev }
+										}
+									}
+								}
+							}
+						}
+						if = {
+							limit = {
+								NOT = { exists = event_target:prethoryn_dummy_country }
+							}
+							random_country = {
+								limit = { is_country_type = swarm_dummy }
+								save_global_event_target_as = prethoryn_dummy_country
+							}
+						}
+						if = {
+							limit = {
+								NOT = { owner = { is_country_type = swarm_dummy } }
+							}
+							set_owner = event_target:prethoryn_dummy_country
+						}
+						remove_fleet_flag = prethoryn_loaned_combat_lock
+						set_fleet_bombardment_stance = armageddon
+						set_fleet_stance = aggressive
+						clear_orders = yes
+						clear_fleet_actions = this
+						remove_auto_move_target = yes
+						queue_actions = {
+							move_to = root
+							orbit_planet = root
+							repeat = {
+								while = {
+									id = "prethoryn_hold_colony_siege_3"
+									root = {
+										NOR = {
+											AND = {
+												exists = owner
+												owner = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											AND = {
+												exists = controller
+												controller = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											is_colony = no
+											is_planet_class = pc_infested
+										}
+									}
+								}
+								wait = 30
+							}
+						}
+					}
+				}
+			}
+			# Case 4: Active Bombardment - re-insulates any fleets retaining real swarm ownership
+			else_if = {
+				limit = {
+					has_orbital_bombardment = yes
+				}
+				solar_system = {
+					every_fleet_in_system = {
+						limit = {
+							has_fleet_flag = prethoryn_anchor@root
+							root = { any_fleet_in_orbit = { is_same_value = prevprev } }
+							OR = {
+								has_fleet_flag = prethoryn_loaned_combat_lock
+								owner = { is_country_type = swarm }
+							}
+						}
+						remove_fleet_flag = prethoryn_loaned_combat_lock
+						if = {
+							limit = {
+								NOT = { exists = event_target:prethoryn_dummy_country }
+							}
+							random_country = {
+								limit = { is_country_type = swarm_dummy }
+								save_global_event_target_as = prethoryn_dummy_country
+							}
+						}
+						set_owner = event_target:prethoryn_dummy_country
+						set_fleet_bombardment_stance = armageddon
+						set_fleet_stance = aggressive
+						clear_orders = yes
+						clear_fleet_actions = this
+						queue_actions = {
+							move_to = root
+							orbit_planet = root
+							repeat = {
+								while = {
+									id = "prethoryn_hold_colony_siege_case4"
+									root = {
+										NOR = {
+											AND = {
+												exists = owner
+												owner = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											AND = {
+												exists = controller
+												controller = {
+													OR = {
+														is_country_type = swarm
+														is_country_type = swarm_dummy
+													}
+												}
+											}
+											is_colony = no
+											is_planet_class = pc_infested
+										}
+									}
+								}
+								wait = 30
+							}
+						}
+					}
+				}
+			}
+
+			# Section B: Transport Fleet Summoning & Multi-Jump Invasion Dispatch
+			if = {
+				limit = {
+					has_ground_combat = no
+					OR = {
+						has_orbital_bombardment = yes
+						solar_system = {
+							any_fleet_in_system = {
+								has_fleet_flag = prethoryn_anchor@root
+							}
+						}
+					}
+					NOT = {
+						from = {
+							any_owned_fleet = {
+								has_fleet_flag = prethoryn_transport@root
+								NOT = { fleet_size < 15 }
+							}
+						}
+					}
+				}
+				save_event_target_as = target_colony
+
+				# Tier 1A: Search host system for unassigned transport
+				solar_system = {
+					random_fleet_in_system = {
+						limit = {
+							owner = { is_country_type = swarm }
+							is_ship_class = shipclass_transport
+							is_in_combat = no
+							NOT = { has_fleet_flag = prethoryn_assigned_transport_fleet }
+						}
+						set_fleet_flag = prethoryn_transport@root
+						set_fleet_flag = prethoryn_assigned_transport_fleet
+						set_fleet_stance = aggressive
+						clear_orders = yes
+						clear_fleet_actions = this
+						remove_auto_move_target = yes
+						auto_move_to_planet = {
+							target = event_target:target_colony
+							clear_auto_move_on_arrival = no
+						}
+						root = { set_planet_flag = prethoryn_has_transport_dispatched }
+					}
+				}
+				# Tier 1B: Search closest system for idle unassigned transport
+				if = {
+					limit = { NOT = { has_planet_flag = prethoryn_has_transport_dispatched } }
+					solar_system = {
+						closest_system = {
+							limit = {
+								any_fleet_in_system = {
+									owner = { is_country_type = swarm }
+									is_ship_class = shipclass_transport
+									is_fleet_idle = yes
+									is_in_combat = no
+									NOT = { has_fleet_flag = prethoryn_assigned_transport_fleet }
+								}
+							}
+							random_fleet_in_system = {
+								limit = {
+									owner = { is_country_type = swarm }
+									is_ship_class = shipclass_transport
+									is_fleet_idle = yes
+									is_in_combat = no
+									NOT = { has_fleet_flag = prethoryn_assigned_transport_fleet }
+								}
+								set_fleet_flag = prethoryn_transport@root
+								set_fleet_flag = prethoryn_assigned_transport_fleet
+								set_fleet_stance = aggressive
+								clear_orders = yes
+								clear_fleet_actions = this
+								remove_auto_move_target = yes
+								auto_move_to_planet = {
+									target = event_target:target_colony
+									clear_auto_move_on_arrival = no
+								}
+								root = { set_planet_flag = prethoryn_has_transport_dispatched }
+							}
+						}
+					}
+				}
+				# Tier 2: Galactic fallback for idle unassigned transport
+				if = {
+					limit = { NOT = { has_planet_flag = prethoryn_has_transport_dispatched } }
+					from = {
+						random_owned_fleet = {
+							limit = {
+								is_ship_class = shipclass_transport
+								is_fleet_idle = yes
+								is_in_combat = no
+								NOT = { has_fleet_flag = prethoryn_assigned_transport_fleet }
+							}
+							set_fleet_flag = prethoryn_transport@root
+							set_fleet_flag = prethoryn_assigned_transport_fleet
+							set_fleet_stance = aggressive
+							clear_orders = yes
+							clear_fleet_actions = this
+							remove_auto_move_target = yes
+							auto_move_to_planet = {
+								target = event_target:target_colony
+								clear_auto_move_on_arrival = no
+							}
+							root = { set_planet_flag = prethoryn_has_transport_dispatched }
+						}
+					}
+				}
+				remove_planet_flag = prethoryn_has_transport_dispatched
+			}
+		}
+	}
+}
+
+# Combat start handoff: Loans warship to real Swarm to apply native combat modifiers
+fleet_event = {
+	id = prethoryn_fix.50
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		owner = { is_country_type = swarm_dummy }
+	}
+
+	immediate = {
+		set_fleet_flag = prethoryn_loaned_combat_lock
+		random_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+			}
+			save_event_target_as = real_prethoryn_swarm
+		}
+		set_owner = event_target:real_prethoryn_swarm
+	}
+}
+
+# MIA return: Re-emerges disengaged fleets under real Swarm
+fleet_event = {
+	id = prethoryn_fix.51
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			owner = { is_country_type = swarm_dummy }
+			has_fleet_flag = prethoryn_loaned_combat_lock
+		}
+	}
+
+	immediate = {
+		remove_fleet_flag = prethoryn_loaned_combat_lock
+		remove_fleet_flag = prethoryn_assigned_combat_fleet
+		if = {
+			limit = {
+				owner = { is_country_type = swarm_dummy }
+			}
+			random_country = {
+				limit = {
+					is_country_type = swarm
+					NOT = { is_country_type = swarm_dummy }
+				}
+				save_event_target_as = real_prethoryn_swarm
+			}
+			set_owner = event_target:real_prethoryn_swarm
+		}
+	}
+}
+
+# Instant colony flip: Assigns controller to real Swarm if invaded by dummy armies
+country_event = {
+	id = prethoryn_fix.52
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = swarm_dummy
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+			}
+			save_event_target_as = real_prethoryn_swarm
+		}
+
+		FROMFROM = {
+			add_threat = { who = event_target:real_prethoryn_swarm amount = 2 }
+			set_controller = event_target:real_prethoryn_swarm
+		}
+	}
+}
+
+# Combat exit handoff: Returns warship to swarm_dummy to re-establish persistent siege lock
+fleet_event = {
+	id = prethoryn_fix.53
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_fleet_flag = prethoryn_loaned_combat_lock
+		exists = solar_system
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				NOT = { exists = event_target:prethoryn_dummy_country }
+			}
+			random_country = {
+				limit = { is_country_type = swarm_dummy }
+				save_global_event_target_as = prethoryn_dummy_country
+			}
+		}
+
+		solar_system = {
+			random_system_planet = {
+				limit = {
+					root = { has_fleet_flag = prethoryn_anchor@prev }
+				}
+				save_event_target_as = anchor_colony
+			}
+		}
+
+		if = {
+			limit = {
+				exists = event_target:anchor_colony
+				event_target:anchor_colony = {
+					NOR = {
+						AND = {
+							exists = owner
+							owner = {
+								OR = {
+									is_country_type = swarm
+									is_country_type = swarm_dummy
+								}
+							}
+						}
+						AND = {
+							exists = controller
+							controller = {
+								OR = {
+									is_country_type = swarm
+									is_country_type = swarm_dummy
+								}
+							}
+						}
+						is_colony = no
+						is_planet_class = pc_infested
+					}
+				}
+			}
+			set_owner = event_target:prethoryn_dummy_country
+			remove_fleet_flag = prethoryn_loaned_combat_lock
+			set_fleet_bombardment_stance = armageddon
+			set_fleet_stance = aggressive
+			clear_orders = yes
+			clear_fleet_actions = this
+			queue_actions = {
+				move_to = event_target:anchor_colony
+				orbit_planet = event_target:anchor_colony
+				repeat = {
+					while = {
+						id = "prethoryn_hold_colony_siege_post_combat"
+						event_target:anchor_colony = {
+							NOR = {
+								AND = {
+									exists = owner
+									owner = {
+										OR = {
+											is_country_type = swarm
+											is_country_type = swarm_dummy
+										}
+									}
+								}
+								AND = {
+									exists = controller
+									controller = {
+										OR = {
+											is_country_type = swarm
+											is_country_type = swarm_dummy
+										}
+									}
+								}
+								is_colony = no
+								is_planet_class = pc_infested
+							}
+						}
+					}
+					wait = 30
+				}
+			}
+		}
+		else = {
+			remove_fleet_flag = prethoryn_loaned_combat_lock
+			remove_fleet_flag = prethoryn_assigned_combat_fleet
+			if = {
+				limit = { exists = event_target:anchor_colony }
+				remove_fleet_flag = prethoryn_anchor@event_target:anchor_colony
+			}
+			clear_fleet_actions = this
+			clear_orders = yes
+		}
+	}
+}
+
+# Monthly Victory Validation & Fleet Cleanup Watchdog
+event = {
+	id = prethoryn_fix.200
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		OR = {
+			AND = {
+				has_global_flag = prethoryn_main_invasion
+				any_country = {
+					is_country_type = swarm
+					NOT = { is_country_type = swarm_dummy }
+				}
+			}
+			AND = {
+				has_global_flag = prethoryn_invasion_defeated
+				any_country = {
+					OR = {
+						has_event_chain = "prethoryn_scourge_chain"
+						has_event_chain = "coming_storm_chain"
+					}
+				}
+			}
+		}
+	}
+
+	immediate = {
+		# Post-Defeat Cleanup Sweep: Clears orphaned Situation Log event chains on existing saves
+		if = {
+			limit = {
+				has_global_flag = prethoryn_invasion_defeated
+				NOT = { any_country = { is_country_type = swarm NOT = { is_country_type = swarm_dummy } } }
+			}
+			every_country = {
+				limit = {
+					OR = {
+						has_event_chain = "prethoryn_scourge_chain"
+						has_event_chain = "coming_storm_chain"
+					}
+				}
+				end_event_chain = "prethoryn_scourge_chain"
+				end_event_chain = "coming_storm_chain"
+			}
+		}
+		every_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+			}
+			if = {
+				limit = {
+					num_owned_planets = 0
+					NOT = { any_owned_starbase = { always = yes } }
+					NOT = {
+						any_system = {
+							any_system_planet = {
+								exists = controller
+								controller = {
+									OR = {
+										is_country_type = swarm
+										is_country_type = swarm_dummy
+									}
+								}
+							}
+						}
+					}
+					NOT = {
+						any_system = {
+							exists = starbase
+							starbase = {
+								owner = {
+									OR = {
+										is_country_type = swarm
+										is_country_type = swarm_dummy
+									}
+								}
+							}
+						}
+					}
+					NOT = {
+						any_system = {
+							any_system_planet = { is_planet_class = pc_infested }
+						}
+					}
+					NOT = {
+						any_owned_fleet = {
+							OR = {
+								is_ship_class = shipclass_military
+								is_ship_class = shipclass_military_station
+							}
+							exists = solar_system
+						}
+					}
+					NOT = {
+						any_country = {
+							is_country_type = swarm_dummy
+							any_owned_fleet = {
+								OR = {
+									is_ship_class = shipclass_military
+									is_ship_class = shipclass_military_station
+								}
+								exists = solar_system
+							}
+						}
+					}
+				}
+				every_country = {
+					end_event_chain = "prethoryn_scourge_chain"
+					end_event_chain = "coming_storm_chain"
+				}
+				every_owned_fleet = {
+					delete_fleet = this
+				}
+				destroy_country = yes
+
+				every_country = {
+					limit = { is_country_type = swarm_dummy }
+					every_owned_fleet = {
+						delete_fleet = this
+					}
+					destroy_country = yes
+				}
+			}
+		}
+	}
+}

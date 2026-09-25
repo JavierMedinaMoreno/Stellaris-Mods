@@ -1,0 +1,4 @@
+#Prevents unnecessary error.log entries when Imperial Tax mod is not present.
+set_tax_resolutions = {}
+set_advanced_tax_resolutions = {}
+set_other_tax_resolutions = {}

@@ -1,0 +1,5 @@
+# Prethoryn Scourge AI Defines Override
+NAI = {
+	SWARM_FULLY_CONQUER_SYSTEM = 120   # Lowers hold weight in purging systems so surplus fleets advance
+	SWARM_INVASION_PLANNING_DEPTH = 10 # Extends target search lookahead across unowned buffer systems
+}

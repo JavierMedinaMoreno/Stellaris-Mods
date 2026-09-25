@@ -1,0 +1,18 @@
+namespace = distar
+
+# Overrides vanilla distar.8000 to force Gray Tempest spawn on galaxy creation
+event = {
+	id = distar.8000
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		if = {
+			limit = {
+				lgate_enabled = yes
+			}
+		set_global_flag = gray_goo_crisis_set
+		set_global_flag = active_gray_goo
+	    }
+    }
+}

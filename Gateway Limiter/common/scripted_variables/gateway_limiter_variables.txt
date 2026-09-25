@@ -1,0 +1,6 @@
+# ==============================================================================
+# GATEWAY LIMIT CONFIGURATION
+# ==============================================================================
+# Number of owned solar systems required to unlock 1 Gateway build slot.
+# Example: 10 means 1 gateway per 10 systems (0-9 systems = 0, 10-19 systems = 1, etc.)
+@systems_per_gateway = 20

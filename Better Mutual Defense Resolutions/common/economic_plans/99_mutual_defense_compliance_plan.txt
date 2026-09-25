@@ -1,0 +1,298 @@
+# ==============================================================================
+# Mutual Defense Resolutions Compliance Economic Plans
+# Dynamically scales AI naval capacity goals to comply with active Mutual Defense resolutions
+# ==============================================================================
+
+# --- BASIC TIER ---
+basic_economy_plan = {
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - The Readied Shield"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+			navy_is_below_md_tier_1 = yes
+		}
+		naval_cap = 40
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Military Readiness Act"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+			navy_is_below_md_tier_2 = yes
+		}
+		naval_cap = 75
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Enemy of My Enemy"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			navy_is_below_md_tier_3 = yes
+		}
+		naval_cap = 150
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Castigation Proclamation"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+			navy_is_below_md_tier_4 = yes
+		}
+		naval_cap = 225
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Renegade Containment"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			navy_is_below_md_tier_5 = yes
+		}
+		naval_cap = 300
+	}
+}
+
+# --- INTERMEDIATE TIER ---
+intermediate_economy_plan = {
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - The Readied Shield"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+			navy_is_below_md_tier_1 = yes
+		}
+		naval_cap = 80
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Military Readiness Act"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+			navy_is_below_md_tier_2 = yes
+		}
+		naval_cap = 150
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Enemy of My Enemy"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			navy_is_below_md_tier_3 = yes
+		}
+		naval_cap = 300
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Castigation Proclamation"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+			navy_is_below_md_tier_4 = yes
+		}
+		naval_cap = 450
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Renegade Containment"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			navy_is_below_md_tier_5 = yes
+		}
+		naval_cap = 600
+	}
+}
+
+# --- ADVANCED TIER ---
+advanced_economy_plan = {
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - The Readied Shield"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+			navy_is_below_md_tier_1 = yes
+		}
+		naval_cap = 150
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Military Readiness Act"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+			navy_is_below_md_tier_2 = yes
+		}
+		naval_cap = 300
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Enemy of My Enemy"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			navy_is_below_md_tier_3 = yes
+		}
+		naval_cap = 600
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Castigation Proclamation"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+			navy_is_below_md_tier_4 = yes
+		}
+		naval_cap = 900
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Renegade Containment"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			navy_is_below_md_tier_5 = yes
+		}
+		naval_cap = 1200
+	}
+}
+
+# --- MATURE TIER ---
+mature_economy_plan = {
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - The Readied Shield"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+			navy_is_below_md_tier_1 = yes
+		}
+		naval_cap = 300
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Military Readiness Act"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+			navy_is_below_md_tier_2 = yes
+		}
+		naval_cap = 600
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Enemy of My Enemy"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			navy_is_below_md_tier_3 = yes
+		}
+		naval_cap = 1200
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Castigation Proclamation"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+			navy_is_below_md_tier_4 = yes
+		}
+		naval_cap = 1800
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Renegade Containment"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			navy_is_below_md_tier_5 = yes
+		}
+		naval_cap = 2400
+	}
+}
+
+# --- ENDGAME TIER ---
+endgame_economy_plan = {
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - The Readied Shield"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+			navy_is_below_md_tier_1 = yes
+		}
+		naval_cap = 500
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Military Readiness Act"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+			navy_is_below_md_tier_2 = yes
+		}
+		naval_cap = 1000
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Enemy of My Enemy"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			navy_is_below_md_tier_3 = yes
+		}
+		naval_cap = 2000
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Castigation Proclamation"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+			navy_is_below_md_tier_4 = yes
+		}
+		naval_cap = 3000
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Renegade Containment"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			navy_is_below_md_tier_5 = yes
+		}
+		naval_cap = 4000
+	}
+}
+
+# --- BEYOND ENDGAME TIER ---
+beyond_endgame_economy_plan = {
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - The Readied Shield"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_the_readied_shield"
+			navy_is_below_md_tier_1 = yes
+		}
+		naval_cap = 1000
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Military Readiness Act"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_military_readiness_act"
+			navy_is_below_md_tier_2 = yes
+		}
+		naval_cap = 2000
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Enemy of My Enemy"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_enemy_of_my_enemy"
+			navy_is_below_md_tier_3 = yes
+		}
+		naval_cap = 4000
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Castigation Proclamation"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_castigation_proclamation"
+			navy_is_below_md_tier_4 = yes
+		}
+		naval_cap = 6000
+	}
+	subplan = {
+		set_name = "Mutual Defense Compliance Buildup - Renegade Containment"
+		potential = {
+			is_galactic_community_member = yes
+			is_active_resolution = "resolution_mutualdefense_renegade_containment"
+			navy_is_below_md_tier_5 = yes
+		}
+		naval_cap = 9999
+	}
+}

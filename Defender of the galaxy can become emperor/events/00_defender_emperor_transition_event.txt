@@ -1,0 +1,57 @@
+# ==============================================================================
+# Overrides: emperor.51
+# Vanilla Source: 'events/nemesis_emperor_events.txt' (lines 569-595)
+# ==============================================================================
+
+# Vanilla block: 'events/nemesis_emperor_events.txt' (namespace declaration, line 1)
+namespace = emperor
+# End of vanilla block: 'events/nemesis_emperor_events.txt' (namespace declaration, line 1)
+
+# Vanilla block: 'events/nemesis_emperor_events.txt' (event definition & base armada conversion, lines 569-589)
+# GDF Becomes Imperial Armada (HIDDEN)
+country_event = {
+    id = emperor.51
+    hide_window = yes
+
+    is_triggered_only = yes
+
+    immediate = {
+        if = {
+            limit = {
+                NOT = { is_active_resolution = resolution_custodian_expand_gdf }
+            }
+            pass_resolution_no_cooldown = resolution_emperor_imperial_armada
+            cancel_resolution = "resolution_custodian_gdf"
+        }
+        else = {
+            pass_resolution_no_cooldown = resolution_emperor_imperial_armada
+            pass_resolution_no_cooldown = resolution_emperor_expand_ia
+            cancel_resolution = "resolution_custodian_gdf"
+            cancel_resolution = "resolution_custodian_expand_gdf"
+        }
+        # End of vanilla block: 'events/nemesis_emperor_events.txt' (event definition & base armada conversion, lines 569-589)
+
+        # Defender_Emperor additions: convert expanded GDF levels (Nomads DLC) to Imperial Armada equivalents
+        if = {
+            limit = {
+                is_active_resolution = resolution_custodian_expand_gdf_2
+            }
+            cancel_resolution = resolution_custodian_expand_gdf_2
+            pass_resolution_no_cooldown = resolution_emperor_expand_ia_2
+        }
+        if = {
+            limit = {
+                is_active_resolution = resolution_custodian_gdf_drills
+            }
+            cancel_resolution = resolution_custodian_gdf_drills
+            pass_resolution_no_cooldown = resolution_emperor_ia_drills
+        }
+
+        # Vanilla block: 'events/nemesis_emperor_events.txt' (notify community members, lines 590-595)
+        every_playable_country = {
+            limit = { is_galactic_community_member = yes }
+            country_event = { id = emperor.52 }
+        }
+    }
+}
+# End of vanilla block: 'events/nemesis_emperor_events.txt' (notify community members, lines 590-595)

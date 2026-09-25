@@ -1,0 +1,91 @@
+# ==============================================================================
+# Overrides: crisis_defender_level_4
+# Vanilla Source: 'common/crisis_levels/00_crisis_levels.txt' (lines 307-334)
+# ==============================================================================
+
+# Vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (requirements header & tooltip)
+crisis_defender_level_4 = {
+	# REQUIREMENTS
+	allow = {
+		custom_tooltip = {
+			success_text = defender_level_4_req_clear_tooltip
+			fail_text =	defender_level_4_req_tooltip
+			# End of vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (requirements header & tooltip)
+			OR = {
+				is_galactic_custodian = yes
+				is_galactic_emperor = yes
+			}
+			# Vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (currency, rewards & unlock event)
+		}
+	}
+	required_crisis_currency = 18000
+
+	# REWARDS
+	perks = {
+		menp_defender_crisis_damage_3
+		menp_defender_opinion_2
+
+		menp_defender_custodian
+		menp_defender_defense_2
+	}
+
+	on_unlock = {
+		hidden_effect = {
+			owner = {
+				country_event = { id = ambition.115 days = 3 }
+			}
+		}
+	}
+}
+# End of vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (currency, rewards & unlock event)
+
+# ==============================================================================
+# Overrides: crisis_defender_level_5
+# Vanilla Source: 'common/crisis_levels/00_crisis_levels.txt' (lines 336-372)
+# ==============================================================================
+
+# Vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (requirements header & crisis check)
+crisis_defender_level_5 = {
+	# REQUIREMENTS
+	allow = {
+		custom_tooltip = {
+			success_text = defender_level_5_req_clear_tooltip
+			fail_text =	defender_level_5_req_tooltip
+			OR = {
+				has_crisis = yes
+				any_country = {
+					is_level_5_player_crisis = yes
+				}
+			}
+		}
+		custom_tooltip = {
+			success_text = defender_level_4_req_clear_tooltip
+			fail_text =	defender_level_4_req_tooltip
+			# End of vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (requirements header & crisis check)
+			OR = {
+				is_galactic_custodian = yes
+				is_galactic_emperor = yes
+			}
+			# Vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (currency, rewards & unlock event)
+		}
+	}
+	required_crisis_currency = 45000
+
+	# REWARDS
+	perks = {
+		menp_defender_crisis_damage_4
+		menp_defender_opinion_3
+		menp_defender_research_2
+		menp_defender_defense_3
+	}
+
+	on_unlock = {
+		hidden_effect = {
+			owner = {
+				country_event = { id = ambition.120 days = 3 }
+			}
+		}
+	}
+}
+# End of vanilla block: 'common/crisis_levels/00_crisis_levels.txt' (currency, rewards & unlock event)
+

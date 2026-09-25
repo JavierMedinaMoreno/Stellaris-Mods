@@ -1,0 +1,38 @@
+namespace = GTorDC
+
+event = {
+    id = GTorDC.1
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+		has_distar = yes
+		any_system = {
+			has_star_flag = lgate
+		}
+        NOT = { has_global_flag = custom_lgate_outcome_set }
+        NOT = { has_global_flag = l_cluster_opened }
+    }
+
+    immediate = {
+        # Mark as resolved so save reloads do not continuously re-roll
+        set_global_flag = custom_lgate_outcome_set
+
+        # Clear any preexisting vanilla flags
+        remove_global_flag = dragon_season
+        remove_global_flag = gray_goo_empire_set
+        remove_global_flag = gray_goo_crisis_set
+        remove_global_flag = active_gray_goo
+
+        # 50/50 Roll
+        random_list = {
+            50 = {
+                set_global_flag = gray_goo_crisis_set
+                set_global_flag = active_gray_goo
+            }
+            50 = {
+                set_global_flag = gray_goo_empire_set
+            }
+        }
+    }
+}

@@ -1,0 +1,90 @@
+# Save game load initialization
+on_single_player_save_game_load = {
+    events = {
+        gateway_calc.2
+    }
+}
+
+# Fresh game start initialization
+on_game_start_country = {
+    events = {
+        gateway_calc.1
+    }
+}
+
+# Periodic reconciliation tick for all empires
+# this = country
+on_yearly_pulse_country = {
+    events = {
+        gateway_calc.1
+    }
+}
+
+# New Outpost constructed (claims a system)
+# this = ship (starbase), from = owner country
+on_building_starbase_outpost = {
+    events = {
+        gateway_calc.30
+    }
+}
+
+# Waystation constructed in neutral space (Nomads)
+# this = galactic object/solar system, from = waystation owner country, fromfrom = starbase
+on_waystation_built = {
+    events = {
+        gateway_calc.30
+    }
+}
+
+# Waystation lost or voluntarily dismantled (Nomads)
+# this = starbase, from = previous owner country
+on_waystation_lost = {
+    events = {
+        gateway_calc.30
+    }
+}
+
+# Starbase ownership transferred (trading, total war flip, integration)
+# this = starbase (new owner), from = former owner country
+on_starbase_transfer = {
+    events = {
+        gateway_calc.30
+    }
+}
+
+# Forward-compatible safety aliases for starbase lifecycle hooks
+on_starbase_built = {
+    events = {
+        gateway_calc.30
+    }
+}
+
+on_starbase_dismantled = {
+    events = {
+        gateway_calc.30
+    }
+}
+
+# Starbase destroyed in combat (Crisis, fauna, Marauders)
+# this = starbase, from = destroying fleet
+on_starbase_destroyed = {
+    events = {
+        gateway_calc.32
+    }
+}
+
+# Star system acquired (claims, total war flips, diplomatic trade, integration)
+# this = country (new owner), from = system, fromfrom = previous owner
+on_system_gained = {
+    events = {
+        gateway_calc.1
+    }
+}
+
+# Star system lost (annexation, trade, sector spinoff, outpost dismantled to neutral space)
+# this = country (previous owner), from = system, fromfrom = new owner
+on_system_lost = {
+    events = {
+        gateway_calc.1
+    }
+}

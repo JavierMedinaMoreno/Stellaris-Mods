@@ -1,0 +1,12 @@
+﻿l_german:
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_expand_gdf_2"
+ resolution_emperor_expand_ia_2: "Oberste Imperiale Armada"
+ resolution_emperor_expand_ia_2_desc: "Die Imperiale Armada ist unsere beste Absicherung gegen die Schrecken, die unsere Galaxie bedrohen könnten. Unter direktem imperialen Befehl ist sie die schlagkräftigste Streitmacht der Galaxie."
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_gdf_drills"
+ resolution_emperor_ia_drills: "Imperiale Militärübungen"
+ resolution_emperor_ia_drills_desc: "Strenge Flottenübungen und eine zentralisierte Führung werden gewährleisten, dass das Galaktische Imperium gegen jede Bedrohung besteht. In unserer Pflicht werden wir nicht wanken."
+
+ #Imperial counterpart to vanilla "resolution_needs_gdf"
+ resolution_needs_ia: "£trigger_no£ Erfordert, dass der Beschluss \"§HImperiale Armada§!\" erlassen wurde"

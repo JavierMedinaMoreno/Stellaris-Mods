@@ -1,0 +1,91 @@
+navy_vs_empire_size_ratio = {
+	base = 0
+	add = trigger:max_naval_capacity
+	mult = trigger:used_naval_capacity_percent
+	divide = trigger:empire_size
+}
+
+md_compliance_ratio_tier_1 = {
+	base = 0
+	add = value:navy_vs_empire_size_ratio
+	divide = @MUTUALDEFENSE_RATIO_TIER_1
+	max = 1.0
+	min = 0.0
+}
+
+md_compliance_ratio_tier_2 = {
+	base = 0
+	add = value:navy_vs_empire_size_ratio
+	divide = @MUTUALDEFENSE_RATIO_TIER_2
+	max = 1.0
+	min = 0.0
+}
+
+md_compliance_ratio_tier_3 = {
+	base = 0
+	add = value:navy_vs_empire_size_ratio
+	divide = @MUTUALDEFENSE_RATIO_TIER_3
+	max = 1.0
+	min = 0.0
+}
+
+md_compliance_ratio_tier_4 = {
+	base = 0
+	add = value:navy_vs_empire_size_ratio
+	divide = @MUTUALDEFENSE_RATIO_TIER_4
+	max = 1.0
+	min = 0.0
+}
+
+md_compliance_ratio_tier_5 = {
+	base = 0
+	add = value:navy_vs_empire_size_ratio
+	divide = @MUTUALDEFENSE_RATIO_TIER_5
+	max = 1.0
+	min = 0.0
+}
+
+md_repeal_compliance_ratio_tier_1 = {
+	base = 1
+	subtract = value:md_compliance_ratio_tier_1
+	mult = 9
+	add = 1
+	min = 1.0
+	max = 10.0
+}
+
+md_repeal_compliance_ratio_tier_2 = {
+	base = 1
+	subtract = value:md_compliance_ratio_tier_2
+	mult = 9
+	add = 1
+	min = 1.0
+	max = 10.0
+}
+
+md_repeal_compliance_ratio_tier_3 = {
+	base = 1
+	subtract = value:md_compliance_ratio_tier_3
+	mult = 9
+	add = 1
+	min = 1.0
+	max = 10.0
+}
+
+md_repeal_compliance_ratio_tier_4 = {
+	base = 1
+	subtract = value:md_compliance_ratio_tier_4
+	mult = 9
+	add = 1
+	min = 1.0
+	max = 10.0
+}
+
+md_repeal_compliance_ratio_tier_5 = {
+	base = 1
+	subtract = value:md_compliance_ratio_tier_5
+	mult = 9
+	add = 1
+	min = 1.0
+	max = 10.0
+}

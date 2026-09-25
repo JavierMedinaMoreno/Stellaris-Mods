@@ -1,0 +1,115 @@
+﻿l_german:
+ #NOTE: The icon £navy_size£ has wide borders. Therefore, for visual balance, it is recommended to skip the spaces around it. Example:
+ #CORRECT:  §YEmpire Size§! in£navy_size£§YNavy Size§!
+ #INCORRECT:  §YEmpire Size§! in £navy_size£ §YNavy Size§!
+
+ mutual_defense_grace_period:0 "Schonfrist für gegenseitige Verteidigung"
+ mutual_defense_grace_period_desc:0 "Dieses Reich befindet sich derzeit in einer Schonfrist, um die Anforderungen der [GetCustomGalComOrImperium] an die £navy_size£§YFlottengröße§! zu erfüllen, bevor Strafen wegen Gesetzesbruchs verhängt werden."
+ mutualdefense_grace.2.name:0 "Schonfrist für gegenseitige Verteidigung begonnen"
+ mutualdefense_grace.2.desc:0 "Unsere£navy_size£§YFlottengröße§! liegt derzeit unter den Anforderungen der aktiven Resolution zur gegenseitigen Verteidigung der [GetCustomGalComOrImperium].\n\nUns wurde eine §Y$@GRACE_PERIOD_YEARS|0$-jährige Schonfrist§! gewährt, um unsere Flotte aufzubauen, bevor wir formell als im §RBruch des galaktischen Gesetzes§! befindlich erklärt werden."
+ mutualdefense_grace.2.a:0 "Wir werden uns darum kümmern."
+ mutualdefense_grace.3.name:0 "Verteidigungsverpflichtung erfüllt"
+ mutualdefense_grace.3.desc:0 "Unsere Flottenstreitkräfte entsprechen nun den Standards für gegenseitige Verteidigung der [GetCustomGalComOrImperium]."
+ mutualdefense_grace.3.a:0 "Ausgezeichnet."
+
+ mod_gal_community:0 "Galaktische Gemeinschaft"
+ mod_gal_imperium:0 "Galaktisches Imperium"
+ gal_com_md_fleets_do_not_meet_requirement:0 "Ihre Flotten erfüllen die Anforderung nicht vollständig"
+ 
+ # =========================================================================
+ # Mutual Defense Resolutions
+ # =========================================================================
+
+ # Tier 1: The Readied Shield
+ resolution_mutualdefense_the_readied_shield:0 "Das bereite Schild"
+ resolution_mutualdefense_the_readied_shield_desc:0 "Das Universum ist ein gefährlicher Ort, und alle Mitglieder der [GetCustomGalComOrImperium] sollten bereit sein, ihre Welten zu verteidigen, sei es gegen Piraten, Weltraumkreaturen oder das Unbekannte."
+ resolution_mutualdefense_the_readied_shield_tooltip:0 "Mitglieder der [GetCustomGalComOrImperium], die im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_1|%0$§! ihrer £empire_sprawl£ §YReichsgröße§! in£navy_size£§YFlottengröße§! nutzen, begehen einen §RBruch des galaktischen Gesetzes§!."
+ resolution_mutualdefense_the_readied_shield_breach:0 "Begeht einen Bruch des galaktischen Gesetzes, wenn die£navy_size£§YFlottengröße§! im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_1|%0$§! der £empire_sprawl£ §YReichsgröße§! beträgt."
+
+ # Tier 2: Military Readiness Act
+ resolution_mutualdefense_military_readiness_act:0 "Militärisches Bereitschaftsgesetz"
+ resolution_mutualdefense_military_readiness_act_desc:0 "Jedes Mitglied der [GetCustomGalComOrImperium] hat gegenüber sich selbst und anderen die Pflicht, zur galaktischen Verteidigung beizutragen."
+ resolution_mutualdefense_military_readiness_act_tooltip:0 "Mitglieder der [GetCustomGalComOrImperium], die im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_2|%0$§! ihrer £empire_sprawl£ §YReichsgröße§! in£navy_size£§YFlottengröße§! nutzen, begehen einen §RBruch des galaktischen Gesetzes§!."
+ resolution_mutualdefense_military_readiness_act_breach:0 "Begeht einen Bruch des galaktischen Gesetzes, wenn die£navy_size£§YFlottengröße§! im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_2|%0$§! der £empire_sprawl£ §YReichsgröße§! beträgt."
+
+ # Tier 3: The Enemy of My Enemy
+ resolution_mutualdefense_enemy_of_my_enemy:0 "Der Feind meines Feindes"
+ resolution_mutualdefense_enemy_of_my_enemy_desc:0 "Der Feind des einen ist der Feind von allen. Wenn eines unserer Mitglieder angegriffen wird, sollten wir dann nicht zulassen, dass ein anderes Mitglied den Täter bestraft?"
+ resolution_mutualdefense_enemy_of_my_enemy_tooltip:0 "Gewährt den Kriegsgrund §YGegenangriff§! gegen Reiche, die kein Mitglied der [GetCustomGalComOrImperium] sind und sich in einem offensiven Krieg gegen ein Mitglied der [GetCustomGalComOrImperium] befinden.\n\nMitglieder der [GetCustomGalComOrImperium], die im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_3|%0$§! ihrer £empire_sprawl£ §YReichsgröße§! in£navy_size£§YFlottengröße§! nutzen, begehen einen §RBruch des galaktischen Gesetzes§!."
+ resolution_mutualdefense_enemy_of_my_enemy_breach:0 "Begeht einen Bruch des galaktischen Gesetzes, wenn die£navy_size£§YFlottengröße§! im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_3|%0$§! der £empire_sprawl£ §YReichsgröße§! beträgt."
+
+ # Tier 4: Castigation Proclamation
+ resolution_mutualdefense_castigation_proclamation:0 "Züchtigungsverkündung"
+ resolution_mutualdefense_castigation_proclamation_desc:0 "Diejenigen, die nicht für uns sind, sind gegen uns und alle, die sich gegen das galaktische Gesetz stellen, müssen bestraft werden."
+ resolution_mutualdefense_castigation_proclamation_tooltip:0 "Jedes Mitglied der [GetCustomGalComOrImperium] kann einen Beschluss vorschlagen, der ein Reich §YDenunziert§!, das als im §RBruch des galaktischen Gesetzes§! befindlich gilt oder kein Mitglied der [GetCustomGalComOrImperium] ist.\n\nDer Kriegsgrund §YErniedrigung§! und das Kriegsziel §YErniedrigung§! können von Reichen verwendet werden, die §Yunbeschränkte Kriege§! gegen Reiche führen können, welche von der [GetCustomGalComOrImperium] §RDenunziert§! wurden oder einen §RBruch des Galaktischen Gesetzes§! verübt haben.\n\nMitglieder der [GetCustomGalComOrImperium], die im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_4|%0$§! ihrer £empire_sprawl£ §YReichsgröße§! in£navy_size£§YFlottengröße§! nutzen, begehen einen §RBruch des galaktischen Gesetzes§!."
+ resolution_mutualdefense_castigation_proclamation_breach:0 "Begeht einen Bruch des galaktischen Gesetzes, wenn die£navy_size£§YFlottengröße§! im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_4|%0$§! der £empire_sprawl£ §YReichsgröße§! beträgt."
+
+ # Tier 5: Renegade Containment Doctrine
+ resolution_mutualdefense_renegade_containment:0 "Eindämmungsdoktrin für Abtrünnige"
+ resolution_mutualdefense_renegade_containment_desc:0 "Die Vorteile einer Mitgliedschaft in der [GetCustomGalComOrImperium] liegen auf der Hand, und die Weigerung, Mitglied zu werden, weist eindeutig auf schlechte Absichten hin. Die Mitglieder sollten ermächtigt werden, ruchlose Handlungen mit Gewalt zu verhindern, bevor Nichtmitglieder ihre Pläne in Gang setzen können."
+ resolution_mutualdefense_renegade_containment_tooltip:0 "Gewährt Reichen mit §Yunbeschränkten Kriegen§! den Kriegsgrund §YPräventivkrieg§! gegen Reiche, die nicht Teil der [GetCustomGalComOrImperium] sind.\n\nMitglieder der [GetCustomGalComOrImperium], die im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_5|%0$§! ihrer £empire_sprawl£ §YReichsgröße§! in£navy_size£§YFlottengröße§! nutzen, begehen einen §RBruch des galaktischen Gesetzes§!."
+ resolution_mutualdefense_renegade_containment_breach:0 "Begeht einen Bruch des galaktischen Gesetzes, wenn die£navy_size£§YFlottengröße§! im Frieden weniger als §Y$@MUTUALDEFENSE_RATIO_TIER_5|%0$§! der £empire_sprawl£ §YReichsgröße§! beträgt."
+
+ # =========================================================================
+ # Custom AI Personalities
+ # =========================================================================
+ personality_honorbound_warriors_mutualdefense:0 "$personality_honorbound_warriors$"
+ personality_honorbound_warriors_mutualdefense_desc:0 "$personality_honorbound_warriors_desc$"
+ personality_evangelising_zealots_mutualdefense:0 "$personality_evangelising_zealots$"
+ personality_evangelising_zealots_mutualdefense_desc:0 "$personality_evangelising_zealots_desc$"
+ personality_erudite_explorers_mutualdefense:0 "$personality_erudite_explorers$"
+ personality_erudite_explorers_mutualdefense_desc:0 "$personality_erudite_explorers_desc$"
+ personality_spiritual_seekers_mutualdefense:0 "$personality_spiritual_seekers$"
+ personality_spiritual_seekers_mutualdefense_desc:0 "$personality_spiritual_seekers_desc$"
+ personality_ruthless_capitalists_mutualdefense:0 "$personality_ruthless_capitalists$"
+ personality_ruthless_capitalists_mutualdefense_desc:0 "$personality_ruthless_capitalists_desc$"
+ personality_peaceful_traders_mutualdefense:0 "$personality_peaceful_traders$"
+ personality_peaceful_traders_mutualdefense_desc:0 "$personality_peaceful_traders_desc$"
+ personality_hegemonic_imperialists_mutualdefense:0 "$personality_hegemonic_imperialists$"
+ personality_hegemonic_imperialists_mutualdefense_desc:0 "$personality_hegemonic_imperialists_desc$"
+ personality_slaving_despots_mutualdefense:0 "$personality_slaving_despots$"
+ personality_slaving_despots_mutualdefense_desc:0 "$personality_slaving_despots_desc$"
+ personality_decadent_hierarchy_mutualdefense:0 "$personality_decadent_hierarchy$"
+ personality_decadent_hierarchy_mutualdefense_desc:0 "$personality_decadent_hierarchy_desc$"
+ personality_democratic_crusaders_mutualdefense:0 "$personality_democratic_crusaders$"
+ personality_democratic_crusaders_mutualdefense_desc:0 "$personality_democratic_crusaders_desc$"
+ personality_harmonious_hierarchy_mutualdefense:0 "$personality_harmonious_hierarchy$"
+ personality_harmonious_hierarchy_mutualdefense_desc:0 "$personality_harmonious_hierarchy_desc$"
+ personality_federation_builders_mutualdefense:0 "$personality_federation_builders$"
+ personality_federation_builders_mutualdefense_desc:0 "$personality_federation_builders_desc$"
+ personality_xenophobic_isolationists_mutualdefense:0 "$personality_xenophobic_isolationists$"
+ personality_xenophobic_isolationists_mutualdefense_desc:0 "$personality_xenophobic_isolationists_desc$"
+ personality_fanatic_purifiers_mutualdefense:0 "$personality_fanatic_purifiers$"
+ personality_fanatic_purifiers_mutualdefense_desc:0 "$personality_fanatic_purifiers_desc$"
+ personality_hive_mind_mutualdefense:0 "$personality_hive_mind$"
+ personality_hive_mind_mutualdefense_desc:0 "$personality_hive_mind_desc$"
+ personality_devouring_swarm_mutualdefense:0 "$personality_devouring_swarm$"
+ personality_devouring_swarm_mutualdefense_desc:0 "$personality_devouring_swarm_desc$"
+ personality_migrating_flock_mutualdefense:0 "$personality_migrating_flock$"
+ personality_migrating_flock_mutualdefense_desc:0 "$personality_migrating_flock_desc$"
+ personality_metalhead_mutualdefense:0 "$personality_metalhead$"
+ personality_metalhead_mutualdefense_desc:0 "$personality_metalhead_desc$"
+ personality_machine_intelligence_mutualdefense:0 "$personality_machine_intelligence$"
+ personality_machine_intelligence_mutualdefense_desc:0 "$personality_machine_intelligence_desc$"
+ personality_assimilators_mutualdefense:0 "$personality_assimilators$"
+ personality_assimilators_mutualdefense_desc:0 "$personality_assimilators_desc$"
+ personality_exterminators_mutualdefense:0 "$personality_exterminators$"
+ personality_exterminators_mutualdefense_desc:0 "$personality_exterminators_desc$"
+ personality_servitors_mutualdefense:0 "$personality_servitors$"
+ personality_servitors_mutualdefense_desc:0 "$personality_servitors_desc$"
+ personality_fanatic_befrienders_mutualdefense:0 "$personality_fanatic_befrienders$"
+ personality_fanatic_befrienders_mutualdefense_desc:0 "$personality_fanatic_befrienders_desc$"
+ personality_became_the_crisis_mutualdefense:0 "$personality_became_the_crisis$"
+ personality_became_the_crisis_mutualdefense_desc:0 "$personality_became_the_crisis_desc$"
+ personality_galactic_defense_force_mutualdefense:0 "$GALACTIC_DEFENSE_FORCE$"
+ personality_galactic_defense_force_mutualdefense_desc:0 "$GALACTIC_DEFENSE_FORCE_DESC$"
+ personality_imperial_origin_overlord_ai_mutualdefense:0 "$personality_imperial_origin_overlord_ai$"
+ personality_imperial_origin_overlord_ai_mutualdefense_desc:0 "$personality_imperial_origin_overlord_ai_desc$"
+ personality_hive_mind_friend_mutualdefense:0 "$personality_hive_mind_friend$"
+ personality_hive_mind_friend_mutualdefense_desc:0 "$personality_hive_mind_friend_desc$"
+ personality_decadent_capitalists_mutualdefense:0 "$personality_decadent_capitalists$"
+ personality_decadent_capitalists_mutualdefense_desc:0 "$personality_decadent_capitalists_desc$"
+ personality_scorching_infernals_mutualdefense:0 "$personality_scorching_infernals$"
+ personality_scorching_infernals_mutualdefense_desc:0 "$personality_scorching_infernals_desc$"
+ personality_hyperthermia_empire_mutualdefense:0 "$personality_hyperthermia_empire$"
+ personality_hyperthermia_empire_mutualdefense_desc:0 "$personality_hyperthermia_empire_desc$"

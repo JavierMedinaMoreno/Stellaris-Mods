@@ -1,0 +1,83 @@
+# Evaluates on Country Scope (Space Owner or Builder)
+calculate_gateway_capacity = {
+    # 1. Reset working variables
+    set_variable = { which = var_gateway_system_count value = 0 }
+    set_variable = { which = var_gateway_capacity value = 0 }
+    set_variable = { which = var_gateway_built_count value = 0 }
+
+    # 2. Runtime customization fallback
+    if = {
+        limit = {
+            NOT = { is_variable_set = var_systems_per_gateway }
+        }
+        set_variable = {
+            which = var_systems_per_gateway
+            value = @systems_per_gateway
+        }
+    }
+
+    # Safety clamp: prevents divide-by-zero
+    if = {
+        limit = {
+            check_variable = { which = var_systems_per_gateway value < 1 }
+        }
+        set_variable = {
+            which = var_systems_per_gateway
+            value = 1000
+        }
+    }
+
+    # 3. Count owned systems (Waystations for Nomads)
+    if = {
+        # Nomads: Scope from Country -> Starbase, then use prev to increment on Country
+        limit = { is_nomadic = yes }
+        every_owned_starbase = {
+            limit = { is_waystation_starbase = yes }
+            prev = {
+                change_variable = {
+                    which = var_gateway_system_count
+                    value = 1
+                }
+            }
+        }
+    }
+    else = {
+        # Standard: Scope from Country -> Solar System within borders, then use prev to increment on Country
+        every_system_within_border = {
+            prev = {
+                change_variable = {
+                    which = var_gateway_system_count
+                    value = 1
+                }
+            }
+        }
+    }
+
+    # 4. Integer division (evaluated on Country scope)
+    set_variable = {
+        which = var_gateway_capacity
+        value = var_gateway_system_count
+    }
+    divide_variable = {
+        which = var_gateway_capacity
+        value = var_systems_per_gateway
+    }
+    floor_variable = var_gateway_capacity
+
+    # 5. Count active/completed built gateways (Excludes gateway_restored)
+    # Scope from Country -> Megastructure, then use prev to increment on Country
+    every_owned_megastructure = {
+        limit = {
+            OR = {
+                is_megastructure_type = gateway_0
+                is_megastructure_type = gateway_final
+            }
+        }
+        prev = {
+            change_variable = {
+                which = var_gateway_built_count
+                value = 1
+            }
+        }
+    }
+}

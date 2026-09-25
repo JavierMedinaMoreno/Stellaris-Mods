@@ -1,0 +1,5 @@
+on_single_player_save_game_load = {
+    events = {
+        defender_emperor.1
+    }
+}

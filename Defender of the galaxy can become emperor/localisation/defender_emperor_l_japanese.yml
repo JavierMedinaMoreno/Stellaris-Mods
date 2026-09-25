@@ -1,0 +1,12 @@
+﻿l_japanese:
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_expand_gdf_2"
+ resolution_emperor_expand_ia_2: "至高の帝国宇宙軍"
+ resolution_emperor_expand_ia_2_desc: "帝国宇宙軍は、 我々の銀河を脅かしかねない恐怖に立ち向かうための最大の防壁である。 帝国直属の指揮下にあるこの軍は、 銀河で最も恐るべき軍事力だ。"
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_gdf_drills"
+ resolution_emperor_ia_drills: "帝国軍事演習"
+ resolution_emperor_ia_drills_desc: "徹底的な艦隊演習と中央集権的な指揮系統は、 銀河帝国がいかなる脅威にも打ち勝つことを確実にする。 使命を前に、 我々が決して怯むことはない。"
+
+ #Imperial counterpart to vanilla "resolution_needs_gdf"
+ resolution_needs_ia: "£trigger_no£ §H帝国宇宙軍§!の決議を可決する必要がある"

@@ -1,0 +1,468 @@
+namespace = mutualdefense_grace
+
+country_event = {
+	id = mutualdefense_grace.1
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = default
+		OR = {
+			is_any_mutualdefense_resolution_active = yes
+			has_country_flag = md_breach_grace_started
+			has_country_flag = md_personality_swapped
+		}
+	}
+
+	immediate = {
+		if = {
+			limit = {
+				is_violating_mutualdefense_resolution = yes
+			}
+			if = {
+				limit = {
+					NOT = { has_country_flag = md_breach_grace_started }
+				}
+				set_timed_country_flag = { flag = md_breach_grace_period years = @GRACE_PERIOD_YEARS }
+				set_country_flag = md_breach_grace_started
+				add_modifier = { modifier = "mutual_defense_grace_period" years = @GRACE_PERIOD_YEARS }
+				if = {
+					limit = { is_ai = no }
+					country_event = { id = mutualdefense_grace.2 }
+				}
+			}
+			if = {
+				limit = {
+					is_ai = yes
+					NOT = { has_country_flag = md_personality_swapped }
+				}
+				country_event = { id = mutualdefense_grace.10 }
+			}
+		}
+		else = {
+			if = {
+				limit = { has_country_flag = md_breach_grace_started }
+				remove_country_flag = md_breach_grace_started
+				remove_country_flag = md_breach_grace_period
+				remove_modifier = "mutual_defense_grace_period"
+				if = {
+					limit = {
+						is_ai = no
+						navy_is_below_active_mutualdefense_requirement = no
+					}
+					country_event = { id = mutualdefense_grace.3 }
+				}
+			}
+			if = {
+				limit = {
+					has_country_flag = md_personality_swapped
+				}
+				country_event = { id = mutualdefense_grace.11 }
+			}
+		}
+	}
+}
+
+# Grace Period Started Popup
+country_event = {
+	id = mutualdefense_grace.2
+	title = "mutualdefense_grace.2.name"
+	desc = "mutualdefense_grace.2.desc"
+	picture = GFX_evt_galactic_senate
+	show_sound = event_factions #event_public_unrest
+	is_triggered_only = yes
+
+	option = {
+		name = "mutualdefense_grace.2.a"
+	}
+}
+
+# Commitment Fulfilled Popup
+country_event = {
+	id = mutualdefense_grace.3
+	title = "mutualdefense_grace.3.name"
+	desc = "mutualdefense_grace.3.desc"
+	picture = GFX_evt_salute
+	show_sound = evn_ove_two_sided_deal
+	is_triggered_only = yes
+
+	option = {
+		name = "mutualdefense_grace.3.a"
+	}
+}
+
+# Ship Built Relay Event: Relays on_ship_built (Ship Scope) to the owner country
+ship_event = {
+	id = mutualdefense_grace.4
+	hide_window = yes
+	is_triggered_only = yes
+
+	immediate = {
+		owner = {
+			country_event = { id = mutualdefense_grace.1 }
+		}
+	}
+}
+
+# Entry Event: Swap AI empire to high military spending clone during non-compliance / grace period
+country_event = {
+	id = mutualdefense_grace.10
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = default
+		is_ai = yes
+		has_country_flag = md_breach_grace_started
+		NOT = { has_country_flag = md_personality_swapped }
+	}
+
+	immediate = {
+		if = {
+			limit = { has_ai_personality = honorbound_warriors }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_honorbound_warriors
+			set_ai_personality = honorbound_warriors_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = evangelising_zealots }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_evangelising_zealots
+			set_ai_personality = evangelising_zealots_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = erudite_explorers }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_erudite_explorers
+			set_ai_personality = erudite_explorers_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = spiritual_seekers }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_spiritual_seekers
+			set_ai_personality = spiritual_seekers_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = ruthless_capitalists }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_ruthless_capitalists
+			set_ai_personality = ruthless_capitalists_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = peaceful_traders }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_peaceful_traders
+			set_ai_personality = peaceful_traders_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = hegemonic_imperialists }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_hegemonic_imperialists
+			set_ai_personality = hegemonic_imperialists_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = slaving_despots }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_slaving_despots
+			set_ai_personality = slaving_despots_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = decadent_hierarchy }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_decadent_hierarchy
+			set_ai_personality = decadent_hierarchy_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = democratic_crusaders }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_democratic_crusaders
+			set_ai_personality = democratic_crusaders_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = harmonious_hierarchy }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_harmonious_hierarchy
+			set_ai_personality = harmonious_hierarchy_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = federation_builders }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_federation_builders
+			set_ai_personality = federation_builders_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = xenophobic_isolationists }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_xenophobic_isolationists
+			set_ai_personality = xenophobic_isolationists_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = fanatic_purifiers }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_fanatic_purifiers
+			set_ai_personality = fanatic_purifiers_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = hive_mind }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_hive_mind
+			set_ai_personality = hive_mind_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = devouring_swarm }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_devouring_swarm
+			set_ai_personality = devouring_swarm_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = migrating_flock }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_migrating_flock
+			set_ai_personality = migrating_flock_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = metalhead }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_metalhead
+			set_ai_personality = metalhead_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = machine_intelligence }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_machine_intelligence
+			set_ai_personality = machine_intelligence_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = assimilators }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_assimilators
+			set_ai_personality = assimilators_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = exterminators }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_exterminators
+			set_ai_personality = exterminators_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = servitors }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_servitors
+			set_ai_personality = servitors_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = fanatic_befrienders }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_fanatic_befrienders
+			set_ai_personality = fanatic_befrienders_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = became_the_crisis }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_became_the_crisis
+			set_ai_personality = became_the_crisis_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = galactic_defense_force }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_galactic_defense_force
+			set_ai_personality = galactic_defense_force_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = imperial_origin_overlord_ai }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_imperial_origin_overlord_ai
+			set_ai_personality = imperial_origin_overlord_ai_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = hive_mind_friend }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_hive_mind_friend
+			set_ai_personality = hive_mind_friend_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = decadent_capitalists }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_decadent_capitalists
+			set_ai_personality = decadent_capitalists_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = scorching_infernals }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_scorching_infernals
+			set_ai_personality = scorching_infernals_mutualdefense
+		}
+		else_if = {
+			limit = { has_ai_personality = hyperthermia_empire }
+			set_country_flag = md_personality_swapped
+			set_country_flag = md_original_personality_hyperthermia_empire
+			set_ai_personality = hyperthermia_empire_mutualdefense
+		}
+	}
+}
+
+# Exit Event: Revert AI empire back to original vanilla personality when compliant or no longer eligible for breach
+country_event = {
+	id = mutualdefense_grace.11
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = default
+		has_country_flag = md_personality_swapped
+	}
+
+	immediate = {
+		remove_country_flag = md_personality_swapped
+		if = {
+			limit = { has_country_flag = md_original_personality_honorbound_warriors }
+			remove_country_flag = md_original_personality_honorbound_warriors
+			set_ai_personality = honorbound_warriors
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_evangelising_zealots }
+			remove_country_flag = md_original_personality_evangelising_zealots
+			set_ai_personality = evangelising_zealots
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_erudite_explorers }
+			remove_country_flag = md_original_personality_erudite_explorers
+			set_ai_personality = erudite_explorers
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_spiritual_seekers }
+			remove_country_flag = md_original_personality_spiritual_seekers
+			set_ai_personality = spiritual_seekers
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_ruthless_capitalists }
+			remove_country_flag = md_original_personality_ruthless_capitalists
+			set_ai_personality = ruthless_capitalists
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_peaceful_traders }
+			remove_country_flag = md_original_personality_peaceful_traders
+			set_ai_personality = peaceful_traders
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_hegemonic_imperialists }
+			remove_country_flag = md_original_personality_hegemonic_imperialists
+			set_ai_personality = hegemonic_imperialists
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_slaving_despots }
+			remove_country_flag = md_original_personality_slaving_despots
+			set_ai_personality = slaving_despots
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_decadent_hierarchy }
+			remove_country_flag = md_original_personality_decadent_hierarchy
+			set_ai_personality = decadent_hierarchy
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_democratic_crusaders }
+			remove_country_flag = md_original_personality_democratic_crusaders
+			set_ai_personality = democratic_crusaders
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_harmonious_hierarchy }
+			remove_country_flag = md_original_personality_harmonious_hierarchy
+			set_ai_personality = harmonious_hierarchy
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_federation_builders }
+			remove_country_flag = md_original_personality_federation_builders
+			set_ai_personality = federation_builders
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_xenophobic_isolationists }
+			remove_country_flag = md_original_personality_xenophobic_isolationists
+			set_ai_personality = xenophobic_isolationists
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_fanatic_purifiers }
+			remove_country_flag = md_original_personality_fanatic_purifiers
+			set_ai_personality = fanatic_purifiers
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_hive_mind }
+			remove_country_flag = md_original_personality_hive_mind
+			set_ai_personality = hive_mind
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_devouring_swarm }
+			remove_country_flag = md_original_personality_devouring_swarm
+			set_ai_personality = devouring_swarm
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_migrating_flock }
+			remove_country_flag = md_original_personality_migrating_flock
+			set_ai_personality = migrating_flock
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_metalhead }
+			remove_country_flag = md_original_personality_metalhead
+			set_ai_personality = metalhead
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_machine_intelligence }
+			remove_country_flag = md_original_personality_machine_intelligence
+			set_ai_personality = machine_intelligence
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_assimilators }
+			remove_country_flag = md_original_personality_assimilators
+			set_ai_personality = assimilators
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_exterminators }
+			remove_country_flag = md_original_personality_exterminators
+			set_ai_personality = exterminators
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_servitors }
+			remove_country_flag = md_original_personality_servitors
+			set_ai_personality = servitors
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_fanatic_befrienders }
+			remove_country_flag = md_original_personality_fanatic_befrienders
+			set_ai_personality = fanatic_befrienders
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_became_the_crisis }
+			remove_country_flag = md_original_personality_became_the_crisis
+			set_ai_personality = became_the_crisis
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_galactic_defense_force }
+			remove_country_flag = md_original_personality_galactic_defense_force
+			set_ai_personality = galactic_defense_force
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_imperial_origin_overlord_ai }
+			remove_country_flag = md_original_personality_imperial_origin_overlord_ai
+			set_ai_personality = imperial_origin_overlord_ai
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_hive_mind_friend }
+			remove_country_flag = md_original_personality_hive_mind_friend
+			set_ai_personality = hive_mind_friend
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_decadent_capitalists }
+			remove_country_flag = md_original_personality_decadent_capitalists
+			set_ai_personality = decadent_capitalists
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_scorching_infernals }
+			remove_country_flag = md_original_personality_scorching_infernals
+			set_ai_personality = scorching_infernals
+		}
+		else_if = {
+			limit = { has_country_flag = md_original_personality_hyperthermia_empire }
+			remove_country_flag = md_original_personality_hyperthermia_empire
+			set_ai_personality = hyperthermia_empire
+		}
+	}
+}

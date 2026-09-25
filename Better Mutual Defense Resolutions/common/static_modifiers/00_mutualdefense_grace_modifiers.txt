@@ -1,0 +1,3 @@
+mutual_defense_grace_period = {
+	icon = "gfx/interface/icons/modifiers/mod_diplo_weight_naval_mult.dds"
+}

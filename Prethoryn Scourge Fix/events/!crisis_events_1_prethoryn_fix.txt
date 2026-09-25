@@ -1,0 +1,405 @@
+namespace = crisis
+
+# FIOS overrides of vanilla crisis_events_1.txt (loads before vanilla due to '!' prefix)
+
+# Spawn Infestors on yearly pulse
+# Overridden to require active physical presence (colonies or starbases)
+event = {
+	id = crisis.204
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			is_country_type = "swarm"
+			NOT = { is_country_type = swarm_dummy }
+			OR = {
+				num_owned_planets > 0
+				any_system_within_border = { exists = starbase }
+			}
+			count_controlled_ship = {
+				limit = { is_ship_size = colony_ship_swarm }
+				count < 4
+			}
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+				OR = {
+					num_owned_planets > 0
+					any_system_within_border = { exists = starbase }
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						exists = event_target:prethoryn
+					}
+				}
+				save_event_target_as = prethoryn
+			}
+			if = {
+				limit = {
+					any_system_within_border = { exists = starbase }
+				}
+				random_system_within_border = {
+					limit = { exists = starbase }
+					starbase = { save_event_target_as = infestor_respawn_system }
+				}
+			}
+			else_if = {
+				limit = {
+					num_owned_planets > 0
+				}
+				random_owned_planet = {
+					save_event_target_as = infestor_respawn_system
+				}
+			}
+			if = {
+				limit = {
+					exists = event_target:infestor_respawn_system
+				}
+				while = {
+					count = 5
+					create_fleet = {
+						name = "NAME_Prethoryn_Infestor"
+						effect = {
+							set_owner = event_target:prethoryn
+							create_ship = {
+								name = random
+								design = "NAME_Swarm_Colonizer"
+								graphical_culture = "swarm_01"
+							}
+							set_location = {
+								target = event_target:infestor_respawn_system
+								distance = 5
+								angle = random
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Spawn Constructors on yearly pulse
+# Overridden to require active physical presence (colonies or starbases)
+event = {
+	id = crisis.205
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			is_country_type = "swarm"
+			NOT = { is_country_type = swarm_dummy }
+			OR = {
+				num_owned_planets > 0
+				any_system_within_border = { exists = starbase }
+			}
+			num_ships > 10
+			count_controlled_ship = {
+				limit = { is_ship_size = construction_ship_swarm }
+				count < 4
+			}
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+				OR = {
+					num_owned_planets > 0
+					any_system_within_border = { exists = starbase }
+				}
+			}
+			if = {
+				limit = {
+					NOT = {
+						exists = event_target:prethoryn
+					}
+				}
+				save_event_target_as = prethoryn
+			}
+			if = {
+				limit = {
+					any_system_within_border = { exists = starbase }
+				}
+				random_system_within_border = {
+					limit = { exists = starbase }
+					starbase = { save_event_target_as = constructor_respawn_system }
+				}
+			}
+			else_if = {
+				limit = {
+					num_owned_planets > 0
+				}
+				random_owned_planet = {
+					save_event_target_as = constructor_respawn_system
+				}
+			}
+			if = {
+				limit = {
+					exists = event_target:constructor_respawn_system
+				}
+				while = {
+					count = 3
+					create_fleet = {
+						name = "NAME_Prethoryn_Constructor"
+						effect = {
+							set_owner = event_target:prethoryn
+							create_ship = {
+								name = random
+								design = "NAME_Swarm_Constructor"
+								graphical_culture = "swarm_01"
+							}
+							set_location = {
+								target = event_target:constructor_respawn_system
+								distance = 5
+								angle = random
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Reinforcement Fleet Spawner (every 2 years)
+# Overridden to sum num_ships across real swarm and swarm_dummy before checking difficulty caps
+event = {
+	id = crisis.206
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		any_country = {
+			is_country_type = swarm
+			NOT = { is_country_type = swarm_dummy }
+			num_owned_planets > 0
+			any_system_within_border = { exists = starbase }
+		}
+	}
+
+	immediate = {
+		random_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+			}
+			set_variable = { which = total_prethoryn_ships value = num_ships }
+			every_country = {
+				limit = { is_country_type = swarm_dummy }
+				prev = {
+					change_variable = { which = total_prethoryn_ships value = prevprev.num_ships }
+				}
+			}
+
+			if = {
+				limit = {
+					is_difficulty > 3
+					check_variable = { which = total_prethoryn_ships value < 2000 }
+				}
+				country_event = { id = crisis.207 }
+			}
+			else_if = {
+				limit = {
+					is_difficulty <= 3
+					check_variable = { which = total_prethoryn_ships value < 750 }
+				}
+				country_event = { id = crisis.207 }
+			}
+		}
+	}
+}
+
+# Yearly Pulse Defeat Check
+# Overridden to verify real-space presence across both entities and purge all fleets upon total defeat
+event = {
+	id = crisis.208
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		has_global_flag = prethoryn_main_invasion
+		any_country = {
+			is_country_type = swarm
+			NOT = { is_country_type = swarm_dummy }
+		}
+	}
+
+	immediate = {
+		every_country = {
+			limit = {
+				is_country_type = swarm
+				NOT = { is_country_type = swarm_dummy }
+			}
+			if = {
+				limit = {
+					num_owned_planets = 0
+					NOT = { any_owned_starbase = { always = yes } }
+					NOT = {
+						any_system = {
+							any_system_planet = {
+								exists = controller
+								controller = {
+									OR = {
+										is_country_type = swarm
+										is_country_type = swarm_dummy
+									}
+								}
+							}
+						}
+					}
+					NOT = {
+						any_system = {
+							exists = starbase
+							starbase = {
+								owner = {
+									OR = {
+										is_country_type = swarm
+										is_country_type = swarm_dummy
+									}
+								}
+							}
+						}
+					}
+					NOT = {
+						any_system = {
+							any_system_planet = { is_planet_class = pc_infested }
+						}
+					}
+					NOT = {
+						any_owned_fleet = {
+							OR = {
+								is_ship_class = shipclass_military
+								is_ship_class = shipclass_military_station
+							}
+							exists = solar_system
+						}
+					}
+					NOT = {
+						any_country = {
+							is_country_type = swarm_dummy
+							any_owned_fleet = {
+								OR = {
+									is_ship_class = shipclass_military
+									is_ship_class = shipclass_military_station
+								}
+								exists = solar_system
+							}
+						}
+					}
+				}
+				every_country = {
+					end_event_chain = "prethoryn_scourge_chain"
+					end_event_chain = "coming_storm_chain"
+				}
+				every_owned_fleet = {
+					delete_fleet = this
+				}
+				destroy_country = yes
+
+				every_country = {
+					limit = { is_country_type = swarm_dummy }
+					every_owned_fleet = {
+						delete_fleet = this
+					}
+					destroy_country = yes
+				}
+			}
+		}
+	}
+}
+
+# Prethoryn Defeated (on_country_destroyed)
+# Overridden to ignore swarm_dummy deletion and clean up swarm_dummy upon real Swarm defeat
+country_event = {
+	id = crisis.210
+	hide_window = yes
+	is_triggered_only = yes
+
+	trigger = {
+		is_country_type = swarm
+		NOT = { is_country_type = swarm_dummy }
+		has_global_flag = prethoryn_main_invasion
+	}
+
+	immediate = {
+		stop_crisis_sound = yes
+		every_controlled_planet = {
+			if = {
+				limit = { is_planet_class = pc_cosmogenesis_world }
+				set_planet_purge_type = purge_cosmogenesis
+			}
+			else = {
+				clear_planet_purge_type = yes
+			}
+		}
+		end_crisis = yes
+		every_country = {
+			end_event_chain = "prethoryn_scourge_chain"
+			end_event_chain = "coming_storm_chain"
+		}
+		if = {
+			limit = { exists = from }
+			from = { set_country_flag = with_great_power_achievement }
+		}
+		remove_global_flag = ongoing_prethoryn_invasion
+		set_global_flag = prethoryn_invasion_defeated
+		remove_global_flag = galactic_crisis_recently_fired
+		if = {
+			limit = {
+				has_global_flag = galactic_crisis_early_defeat_tracker_1
+			}
+			remove_global_flag = galactic_crisis_early_defeat_tracker_1
+			multiply_crisis_strength = 1.5
+		}
+		else_if = {
+			limit = {
+				has_global_flag = galactic_crisis_early_defeat_tracker_2
+			}
+			remove_global_flag = galactic_crisis_early_defeat_tracker_2
+			multiply_crisis_strength = 1.25
+		}
+		observer_event = { id = observer.33 }
+
+		every_country = {
+			limit = {
+				OR = {
+					is_country_type = default
+					is_country_type = fallen_empire
+					is_country_type = awakened_fallen_empire
+				}
+			}
+			country_event = { id = crisis.211 }
+		}
+
+		random_country = {
+			limit = { is_country_type = global_event }
+			country_event = { id = crisis.119 days = 360 }
+		}
+		if = {
+			limit = { exists = event_target:crisis_sentinels }
+			event_target:crisis_sentinels = {
+				country_event = { id = crisis.75 days = 15 random = 10 }
+			}
+		}
+
+		every_country = {
+			limit = { is_country_type = swarm_dummy }
+			every_owned_fleet = {
+				delete_fleet = this
+			}
+			destroy_country = yes
+		}
+	}
+}

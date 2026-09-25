@@ -1,0 +1,12 @@
+﻿l_russian:
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_expand_gdf_2"
+ resolution_emperor_expand_ia_2: "Верховный имперский флот"
+ resolution_emperor_expand_ia_2_desc: "Имперский флот — лучшая гарантия защиты от кошмаров, которые могут угрожать нашей галактике. Находясь под прямым имперским командованием, он является самой грозной военной силой в галактике."
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_gdf_drills"
+ resolution_emperor_ia_drills: "Имперские военные учения"
+ resolution_emperor_ia_drills_desc: "Интенсивные учения флота и централизованное командование гарантируют, что Галактический империум одолеет любую угрозу. Исполняя свой долг, мы не дрогнем."
+
+ #Imperial counterpart to vanilla "resolution_needs_gdf"
+ resolution_needs_ia: "£trigger_no£ Должна быть принята резолюция §H«Имперский флот»§!"

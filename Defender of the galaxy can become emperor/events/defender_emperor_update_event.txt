@@ -1,0 +1,38 @@
+namespace = defender_emperor
+
+# Retroactive Fix for Existing Saves
+event = {
+    id = defender_emperor.1
+    hide_window = yes
+    is_triggered_only = yes
+
+    trigger = {
+        has_galactic_emperor = yes
+    }
+
+    immediate = {
+        # Fix stranded Tier-2 GDF Expansion
+        if = {
+            limit = {
+                is_active_resolution = resolution_custodian_expand_gdf_2
+            }
+            cancel_resolution = resolution_custodian_expand_gdf_2
+            if = {
+                limit = { NOT = { is_active_resolution = resolution_emperor_expand_ia_2 } }
+                pass_resolution_no_cooldown = resolution_emperor_expand_ia_2
+            }
+        }
+
+        # Fix stranded GDF Drills
+        if = {
+            limit = {
+                is_active_resolution = resolution_custodian_gdf_drills
+            }
+            cancel_resolution = resolution_custodian_gdf_drills
+            if = {
+                limit = { NOT = { is_active_resolution = resolution_emperor_ia_drills } }
+                pass_resolution_no_cooldown = resolution_emperor_ia_drills
+            }
+        }
+    }
+}

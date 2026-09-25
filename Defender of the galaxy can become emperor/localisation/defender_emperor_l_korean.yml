@@ -1,0 +1,12 @@
+﻿l_korean:
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_expand_gdf_2"
+ resolution_emperor_expand_ia_2: "최고 제국 함대"
+ resolution_emperor_expand_ia_2_desc: "제국 함대는 우리 은하를 위협하는 공포에 맞설 가장 확실한 방패입니다. 제국의 직접적인 지휘 아래, 은하계에서 가장 막강한 군사력을 발휘합니다."
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_gdf_drills"
+ resolution_emperor_ia_drills: "제국 군사 훈련"
+ resolution_emperor_ia_drills_desc: "철저한 함대 훈련과 중앙 집중식 지휘는 은하 제국이 그 어떤 위협에도 승리하도록 보장할 것입니다. 의무 앞에서, 우리는 결코 흔들리지 않을 것입니다."
+
+ #Imperial counterpart to vanilla "resolution_needs_gdf"
+ resolution_needs_ia: "£trigger_no£ §H제국 함대§! 결의안 통과가 필요합니다."

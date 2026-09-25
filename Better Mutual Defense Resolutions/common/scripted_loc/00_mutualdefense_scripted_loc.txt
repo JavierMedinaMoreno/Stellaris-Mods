@@ -1,0 +1,12 @@
+defined_text = {
+	name = GetCustomGalComOrImperium
+	text = {
+		trigger = {
+			has_global_flag = galactic_imperium_formed
+		}
+		localization_key = "mod_gal_imperium"
+	}
+	text = {
+		localization_key = "mod_gal_community"
+	}
+}

@@ -1,0 +1,5 @@
+version="2.1"
+name="Gray Tempest or Dessanu Consonance"
+picture="thumbnail.png"
+supported_version="v4.5.*"
+remote_file_id="3783539095"

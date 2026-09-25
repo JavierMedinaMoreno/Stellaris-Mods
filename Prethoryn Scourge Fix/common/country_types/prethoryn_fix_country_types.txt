@@ -1,0 +1,52 @@
+# Parallel crisis country type to insulate sieging fleets from C++ naval AI order diversion.
+# Empty AI modules block prevents rogue orders while enabled = yes retains difficulty scaling.
+swarm_dummy = {
+	attack_unarmed_orbital_stations = yes
+	scaled_difficulty_bonuses = 3.0
+	end_game_crisis = yes
+	destroys_starbases = yes
+	can_own_empty_planets = yes # Prevents accidental engine cleanup of 0-pop infested worlds
+	needs_survey = no
+	has_complete_sensor = yes
+	can_planets_be_attacked = no
+	has_capital = no
+	enforces_borders = no
+	government = no
+	colonizing_title = "COLONIZING_PLANET_SWARM"
+	colonizing_desc = "PLANET_VIEW_UNDER_COLONIZATION_SWARM_DESC"
+	home_system = swarm_invasion_target_1
+	custom_starbase = starbase_swarm
+	observable = yes
+	uses_origins = no
+	show_in_contacts_list = no
+
+	# Qualifies for AI difficulty scaling (country->IsAI()) while suppressing C++ military modules
+	ai = {
+		enabled = yes
+		declare_war = no
+		colonizer = no
+		internal_policies = no
+		modification = no
+		construction = no
+		tech = no
+		modules = {}
+	}
+
+	faction = {
+		needs_colony = no
+		auto_delete = no # Prevents engine deletion when fleet pool is temporarily empty
+		hostile = yes
+		needs_border_access = no
+	}
+
+	custom_diplomacy = yes
+
+	modules = {
+		standard_event_module = {}
+		standard_leader_module = {}
+		all_technology_module = {}
+		exclusive_diplomacy_module = {
+			contact_rule = on_action_only # Suppresses first contact popups
+		}
+	}
+}

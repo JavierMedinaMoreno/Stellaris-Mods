@@ -1,0 +1,17 @@
+on_monthly_pulse_country = {
+	events = {
+		mutualdefense_grace.1
+	}
+}
+
+on_ship_built = {
+	events = {
+		mutualdefense_grace.4
+	}
+}
+
+on_war_beginning = {
+	events = {
+		mutualdefense_grace.1
+	}
+}

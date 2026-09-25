@@ -1,0 +1,12 @@
+﻿l_french:
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_expand_gdf_2"
+ resolution_emperor_expand_ia_2: "Flotte impériale suprême"
+ resolution_emperor_expand_ia_2_desc: "La Flotte impériale est notre meilleure garantie contre les horreurs susceptibles de menacer notre galaxie. Sous commandement impérial direct, elle constitue la force militaire la plus formidable de la galaxie."
+ 
+ #Imperial counterpart to vanilla "resolution_custodian_gdf_drills"
+ resolution_emperor_ia_drills: "Exercices militaires impériaux"
+ resolution_emperor_ia_drills_desc: "Des exercices de flotte rigoureux et un commandement centralisé garantiront que l'Empire galactique l'emporte face à toute menace. Face au devoir, nous ne faiblirons pas."
+
+ #Imperial counterpart to vanilla "resolution_needs_gdf"
+ resolution_needs_ia: "£trigger_no£ Nécessite l'adoption de la résolution §HFlotte impériale§!"

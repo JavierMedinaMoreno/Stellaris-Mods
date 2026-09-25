@@ -1,0 +1,363 @@
+artificial_intelligence_policy = {
+	category = society
+	potential = {
+		NOT = { has_ethic = ethic_gestalt_consciousness }
+		OR = {
+			has_origin = origin_synthetic_fertility
+			can_set_ai_policy = yes
+			has_country_flag = synthetic_empire
+			is_individual_machine = yes
+		}
+	}
+
+	option = {
+		name = "ai_outlawed"
+
+		potential = {
+			is_individual_machine = no
+		}
+		valid = {
+			NOR = {
+				has_ethic = ethic_fanatic_materialist
+				has_origin = origin_synthetic_fertility
+				custom_tooltip = {
+					success_text = is_a_synthetic_empire
+					has_country_flag = synthetic_empire
+				}
+				is_individual_machine = yes
+			}
+		}
+
+		policy_flags = {
+			ai_outlawed
+		}
+
+		in_breach_of = {
+			{
+				key = resolution_galacticstudies_advanced_xenostudies
+			}
+			{
+				key = resolution_galacticstudies_ethical_guideline_refactoring
+			}
+			{
+				key = resolution_galacticstudies_extradimensional_experimentation
+			}
+		}
+
+		ai_weight = {
+			modifier = {
+				factor = 0
+				has_ethic = ethic_fanatic_materialist
+			}
+			modifier = {
+				factor = 5
+				is_spiritualist = yes
+				NOT = { has_origin = origin_cybernetic_creed }
+			}
+			modifier = {
+				factor = 0.1
+				has_valid_ai_personality = yes
+				is_ai = yes
+				is_galactic_community_member = yes
+				OR = {
+					is_active_resolution = "resolution_galacticstudies_advanced_xenostudies"
+					is_active_resolution = "resolution_galacticstudies_ethical_guideline_refactoring"
+					is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "ai_servitude"
+
+		potential = {
+			is_individual_machine = no
+		}
+
+		valid = {
+			NOT = {	has_origin = origin_synthetic_fertility }
+			custom_tooltip = {
+				fail_text = is_a_synthetic_empire_fail
+				NOT = { has_country_flag = synthetic_empire }
+			}
+			is_individual_machine = no
+		}
+
+		policy_flags = {
+			ai_servitude
+		}
+
+		ai_weight = {
+			modifier = {
+				factor = 5
+				has_valid_ai_personality = yes
+				has_ai_personality_behaviour = robot_exploiter
+			}
+			modifier = {
+				factor = 2
+				has_valid_ai_personality = yes
+				has_ai_personality_behaviour = robot_liberator
+			}
+			modifier = {
+				factor = 0
+				is_spiritualist = yes
+				NOT = { has_origin = origin_cybernetic_creed }
+				NOT = {
+					has_valid_ai_personality = yes
+					is_ai = yes
+					is_galactic_community_member = yes
+					OR = {
+						is_active_resolution = "resolution_galacticstudies_advanced_xenostudies"
+						is_active_resolution = "resolution_galacticstudies_ethical_guideline_refactoring"
+						is_active_resolution = "resolution_galacticstudies_extradimensional_experimentation"
+					}
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "ai_full_rights"
+
+		valid = {
+			OR = {
+				custom_tooltip = {
+					fail_text = is_a_synthetic_empire
+					has_country_flag = synthetic_empire
+				}
+				if = {
+					limit = {
+						NOT = { has_origin = origin_cybernetic_creed }
+					}
+					is_spiritualist = no
+				}
+				is_individual_machine = yes
+			}
+			NOT = { has_policy_flag = robots_outlawed }
+		}
+
+		policy_flags = {
+			ai_full_rights
+		}
+
+		in_breach_of = {
+			{
+				key = resolution_divinity_a_defined_purpose
+			}
+		}
+
+		modifier = {}
+
+		ai_weight = {
+			modifier = {
+				factor = 0.5
+				is_materialist = no
+				NOR = {
+					is_synthetic_empire = yes
+					has_technology = tech_synthetic_workers
+				}
+			}
+			modifier = {
+				factor = 5
+				has_valid_ai_personality = yes
+				has_ai_personality_behaviour = robot_liberator
+			}
+			modifier = {
+				factor = 0
+				is_spiritualist = yes
+				NOT = { has_origin = origin_cybernetic_creed }
+			}
+		}
+	}
+}
+
+purge = {
+	category = society
+	option = {
+		name = "purge_not_allowed"
+
+		valid = {
+			NOT = { has_ethic = ethic_gestalt_consciousness }
+			NOR = {
+				has_valid_civic = "civic_fanatic_purifiers"
+				has_valid_civic = "civic_scorched_earth"
+				has_origin = origin_nomadic_purger
+			}
+		}
+
+		policy_flags = {
+			purge_not_allowed
+		}
+
+		on_enabled = {
+			if = {
+				limit = {
+					is_nomadic = yes
+					OR = {
+						has_policy_flag = nomad_total_war_purge
+						has_policy_flag = nomad_total_war_displace
+					}
+				}
+				set_policy = {
+					policy = nomad_total_war
+					option = nomad_total_war_subject
+					cooldown = yes
+				}
+			}
+		}
+	}
+
+	option = {
+		name = "purge_displacement_only"
+
+		policy_flags = {
+			purge_displacement_only
+		}
+
+		modifier = {
+			refugee_attraction = -0.25
+		}
+
+		valid = {
+			is_fanatic_xenophile = no
+			is_homicidal = no
+			NAND = {
+				has_origin = origin_nomadic_purger
+				overlord? = {
+					has_policy_flag = nomad_total_war_purge
+				}
+			}
+		}
+
+		on_enabled = {
+			if = {
+				limit = {
+					is_nomadic = yes
+					has_policy_flag = nomad_total_war_purge
+				}
+				set_policy = {
+					policy = nomad_total_war
+					option = nomad_total_war_displace
+					cooldown = yes
+				}
+			}
+		}
+
+		ai_weight = {
+			factor = 5
+			modifier = {
+				factor = 10
+				has_ethic = ethic_gestalt_consciousness
+				values_others = yes
+			}
+			modifier = {
+				factor = 0
+				has_valid_ai_personality = yes
+				has_ai_personality_behaviour = multispecies
+			}
+		}
+	}
+
+	option = {
+		name = "purge_allowed"
+
+		in_breach_of = {
+			{
+				key = resolution_rulesofwar_reverence_for_life
+			}
+			{
+				key = resolution_rulesofwar_independent_tribunals
+			}
+			{
+				key = resolution_rulesofwar_last_resort_doctrine
+			}
+			{
+				key = resolution_rulesofwar_demobilization_initiative
+			}
+		}
+
+		policy_flags = {
+			purge_allowed
+		}
+		modifier = {
+			refugee_attraction = -0.90
+		}
+
+		valid = {
+			custom_tooltip = {
+				success_text = is_not_a_signatory_vassal_success
+				fail_text = is_not_a_signatory_vassal_fail
+				NOT = { any_agreement = { agreement_preset = preset_signatory } }
+			}
+			custom_tooltip = {
+				fail_text = is_broken_shackles_origin
+				NOT = { has_origin = origin_broken_shackles }
+			}
+			OR = {
+				has_ethic = ethic_gestalt_consciousness
+				is_xenophobe = yes
+				has_crisis_perk = menp_undertaker	# Unlocked with Crisis Level 1
+				AND = {
+					custom_tooltip = {
+						text = civic_tooltip_not_xenophile
+						is_fanatic_xenophile = no
+					}
+					has_purity_imperfection_remediation_tradition = yes
+				}
+			}
+			NAND = {
+				has_origin = origin_nomadic_purger
+				overlord? = {
+					has_policy_flag = nomad_total_war_displace
+				}
+			}
+		}
+
+		ai_weight = {
+			factor = 10
+			modifier = {
+				factor = 40
+				has_ethic = ethic_gestalt_consciousness
+				values_others = no
+			}
+			modifier = {
+				factor = 0
+				is_pacifist = yes
+			}
+			modifier = {
+				factor = 0
+				has_valid_ai_personality = yes
+				NOR = {
+					has_ai_personality_behaviour = purger
+					has_ethic = ethic_gestalt_consciousness
+					AND = {
+						has_origin = origin_necrophage
+						is_xenophobe = yes
+					}
+				}
+			}
+			modifier = {
+				factor = 0.1
+				has_valid_ai_personality = yes
+				is_ai = yes
+				is_galactic_community_member = yes
+				OR = {
+					is_active_resolution = "resolution_rulesofwar_reverence_for_life"
+					is_active_resolution = "resolution_rulesofwar_independent_tribunals"
+					is_active_resolution = "resolution_rulesofwar_last_resort_doctrine"
+					is_active_resolution = "resolution_rulesofwar_demobilization_initiative"
+				}
+			}
+			modifier = {
+				factor = 10
+				has_ascension_perk = ap_become_the_crisis
+			}
+			modifier = {
+				factor = 1000
+				has_origin = origin_necrophage
+				is_xenophobe = yes
+			}
+		}
+	}
+}
